@@ -6,17 +6,16 @@
       <div class="left-side"></div>
 
       <div class="right-side">
-        <form>
+        <form @submit.prevent="login">
           <div class="logo-container btn-group">
             <img class="logotipo" src="../../public/img/RASBIOTECA(4)(1)(1).png" alt="">
           </div>
 
-
           <label for="email">Email</label>
-          <input type="text" placeholder="Introduce tu correo" name="email" required />
+          <input type="email" v-model="email" placeholder="Introduce tu correo" name="email" required />
 
           <label for="password">Password</label>
-          <input type="password" placeholder="Introduce tu contraseña" name="password" required />
+          <input type="password" v-model="password" placeholder="Introduce tu contraseña" name="password" required />
 
           <button type="submit" class="login-btn">Sign in</button>
           <div class="links">
@@ -25,7 +24,6 @@
           </div>
         </form>
       </div>
-
     </main>
   </body>
 </template>
@@ -33,8 +31,42 @@
 <script>
 export default {
   name: 'Login',
-}
+  data() {
+    return {
+      email: '',
+      password: ''
+    };
+  },
+  methods: {
+    async login() {
+      try {
+        const response = await fetch('http://localhost:3001/api/clients/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            client_email: this.email,
+            client_password: this.password
+          })
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log('Login successful');
+          localStorage.setItem('token', data.body.token);
+          this.$router.push('/');
+        } else {
+          console.error('Login failed');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+  }
+};
 </script>
+
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
