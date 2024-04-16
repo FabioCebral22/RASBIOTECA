@@ -3,7 +3,8 @@
     <div class="logo-container">
       <img src="../../public/img/RASBIOTECA(4)(1)(1).png" alt="Logo" class="logo" />
     </div>
-    <nav>
+    <button class="Mobile" @click="toggleMenu">☰</button>
+    <nav class="navMobile" :class="{ 'open': isOpen }">
       <ul>
         <li><a href="#">Inicio</a></li>
         <li><a href="#">Clubs</a></li>
@@ -16,7 +17,17 @@
 
 <script>
 export default {
-  name: 'HeaderVue'
+  name: 'HeaderVue',
+  data() {
+    return {
+      isOpen: false
+    }
+  },
+  methods: {
+    toggleMenu() {
+      this.isOpen = !this.isOpen;
+    }
+  }
 }
 </script>
 
@@ -33,13 +44,26 @@ header {
   background-color: #1A1919;
 }
 
+.Mobile {
+  display: none;
+  font-size: 1.5rem;
+  background-color: transparent;
+  color: #FFFFFF;
+  border: none;
+  cursor: pointer;
+}
+
+.Mobile:focus {
+  outline: none;
+}
+
 .logo-container {
   display: flex;
   justify-content: center;
   width: 100%;
 }
 
-.logo{
+.logo {
   width: 20%;
 }
 
@@ -64,5 +88,40 @@ nav a {
 
 nav a:hover, nav a.active {
   border-bottom-color: #FF008C;
+}
+
+@media (max-width: 768px) {
+  
+  .logo{
+    width: 50%;
+  }
+
+  .Mobile {
+    display: block;
+  }
+  
+  .navMobile {
+    display: none;
+  }
+
+  .navMobile ul {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    list-style: none;
+    padding: 0;
+  }
+
+  .navMobile li {
+    margin: 0.5rem 0;
+  }
+
+  .navMobile a {
+    font-size: 0.8rem;
+  }
+
+  .navMobile.open {
+    display: flex;
+  }
 }
 </style>
