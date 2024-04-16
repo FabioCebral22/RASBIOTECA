@@ -10,7 +10,6 @@
     <h2>Próximamente</h2>
   </div>
 </template>
-
 <script>
 
 export default {
