@@ -6,10 +6,10 @@
     <button class="Mobile" @click="toggleMenu">☰</button>
     <nav class="navMobile" :class="{ 'open': isOpen }">
       <ul>
-        <li><a href="#">Inicio</a></li>
-        <li><a href="#">Clubs</a></li>
-        <li><a href="#">Entradas</a></li>
-        <li><a href="#">Perfil</a></li>
+        <li><router-link to="/">Inicio</router-link></li>
+        <li><router-link to="/clubs">Clubs</router-link></li>
+        <li><router-link to="/tickets">Entradas</router-link></li>
+        <li><router-link to="/profile">Perfil</router-link></li>
       </ul>
     </nav>
   </header>
