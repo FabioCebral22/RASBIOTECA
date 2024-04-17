@@ -1,12 +1,12 @@
 <template>
   <header>
     <div class="logo-container">
-      <img src="../../public/img/RASBIOTECA(4)(1)(1).png" alt="Logo" class="logo" />
+      <img src="/img/RASBIOTECA(4)(1)(1).png" alt="Logo" class="logo" />
     </div>
     <button class="Mobile" @click="toggleMenu">☰</button>
     <nav class="navMobile" :class="{ 'open': isOpen }">
       <ul>
-        <li><router-link to="/">Inicio</router-link></li>
+        <li><router-link to="/home">Inicio</router-link></li>
         <li><router-link to="/clubs">Clubs</router-link></li>
         <li><router-link to="/tickets">Entradas</router-link></li>
         <li><router-link to="/profile">Perfil</router-link></li>
@@ -33,10 +33,7 @@ export default {
 
 <style scoped>
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
-
 header {
-  font-family: 'Poppins', sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;

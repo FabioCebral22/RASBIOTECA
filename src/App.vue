@@ -1,7 +1,8 @@
 <template>
-  <div id="app">
+  <div class="app">
     <HeaderVue/>
     <router-view/>
+    <FooterVue/>
   </div>
 </template>
 
@@ -12,9 +13,19 @@ import HeaderVue from './components/HeaderVue.vue';
 export default {
   name: 'App',
   components: {
-    HeaderVue
+    HeaderVue,
   },
   router
 }
 
 </script>
+
+<style scoped>
+
+.app {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+</style>

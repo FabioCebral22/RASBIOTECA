@@ -1,7 +1,7 @@
 <template>
     <div class="editar-perfil">
       <h1>Información de Usuario</h1>
-      <img src="../../public/img/default-profile.jpg" alt="Image" class="profile-image" />
+      <img src="/img/default-profile.jpg" alt="Image" class="profile-image" />
       <form @submit.prevent="submitForm">
         <div class="form-group">
           <label for="name">Nombre:</label>
@@ -68,10 +68,8 @@
   </script>
   
   <style scoped>
-  @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
   .editar-perfil {
-    font-family: 'Poppins', sans-serif;
     background-color: #1A1919;
     color: #FFFFFF;
     display: flex;

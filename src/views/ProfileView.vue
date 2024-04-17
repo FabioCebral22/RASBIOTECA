@@ -1,23 +1,40 @@
 <template>
-  <div>
-    <h1>PERFIL</h1>
-    <div v-if="user">
-      <p>Nombre: {{ user.client_name }}</p>
-      <p>Nickname: {{ user.client_nickname }}</p>
-      <p>Email: {{ user.client_email }}</p>
+  <div class="body">
+    <div class="header">
+      <img src="/public/img/discoteca.jpg" class="header-img">
+      <div class="user-info">
+        <img v-if="user" :src="user.profile_image" alt="Profile image" class="profile-image">
+        <div class="info">
+          <h1>{{ user.client_name }}</h1>
+          <h2>({{ user.client_nickname }})</h2>
+          <p>{{ user.client_email }}</p>
+        </div>
+      </div>
     </div>
-    <div v-else>
-      <p>Cargando...</p>
+
+    <div class="activities-reviews">
+      <section class="activities">
+        <h1 class="rose">Actividades Recientes</h1>
+        <div class="entries">
+          <EntradaVue />
+        </div>
+      </section>
+
+      <section class="reviews">
+        <h1 class="rose">Reviews</h1>
+      </section>
     </div>
-    <FooterVue />
   </div>
 </template>
+
+
 <script>
-import FooterVue from '@/components/FooterVue.vue';
+import EntradaVue from '@/components/EntradaVue.vue';
+
 export default {
   name: 'ProfileView',
   components: {
-    FooterVue,
+    EntradaVue,
   },
   data() {
     return {
@@ -52,3 +69,85 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.body {
+  color: #E3E3E3;
+  display: flex;
+  flex-direction: column;
+}
+
+.user{
+  height: 40rem;
+}
+
+.headerimg {
+  width: 100%;
+  height: 15rem;
+  object-fit: cover;
+  position: relative;
+}
+
+.infouser {
+  text-align: center;
+  width: 33%;
+}
+
+.usuario {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+
+.profile-image {
+  width: 20rem;
+  height: 20rem;
+  border-radius: 50%;
+  position: absolute;
+  top: calc(15rem - -1rem);
+  left: 6%;
+  display: block;
+  border: 1rem solid #333337;
+}
+
+
+.img1{
+  width: 33%;
+}
+
+.email {
+  font-size: 1rem;
+  width: 33%;
+  margin: auto;
+  text-align: center;
+}
+
+.rose {
+  color: #FF008C;
+  font-size: 2rem;
+}
+
+.act-rev{
+  width: 100%;
+  margin-top: 15rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.actividades{
+  width: 100%;
+  margin: auto;
+}
+
+.entradas{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  margin-top: 2rem;
+  align-items: center;
+}
+
+</style>

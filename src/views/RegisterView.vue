@@ -8,7 +8,7 @@
         <div class="right-side">
           <form @submit.prevent="registerClient">
             <div class="logo-container btn-group">
-              <img class="logotipo" src="../../public/img/RASBIOTECA(4)(1)(1).png" alt="">
+              <img class="logotipo" src="/img/RASBIOTECA(4)(1)(1).png" alt="">
             </div>
             <label for="full-name">Nombre Completo</label>
             <input type="text" v-model="clientName" placeholder="Introduce tu nombre y apellidos" required />
@@ -74,13 +74,11 @@
   </script>
   
   <style scoped>
-  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
   
   *{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "Poppins", sans-serif;
   }
   
   body {
