@@ -3,11 +3,12 @@
     <div class="header">
       <img src="/public/img/discoteca.jpg" class="header-img">
       <div class="user-info" v-if="user">
-        <img :src="user.profile_image" alt="Profile image" class="profile-image">
+        <!-- <img :src="user.profile_image" alt="Profile image" class="profile-image"> -->
+        <img src="/public/img/discoteca.jpg" alt="Profile image" class="profile-image">
         <div class="info">
           <h1>{{ user.client_name }}</h1>
           <h2>({{ user.client_nickname }})</h2>
-          <p>{{ user.client_email }}</p>
+          <p class="email">{{ user.client_email }}</p>
         </div>
       </div>
     </div>
@@ -73,85 +74,102 @@ export default {
 }
 </script>
 
-
 <style scoped>
+/* Estilos para PC y tablet */
 .body {
   color: #E3E3E3;
   display: flex;
   flex-direction: column;
+  padding: 0 1rem;
 }
 
-.user{
-  height: 40rem;
-}
-
-.headerimg {
-  width: 100%;
-  height: 15rem;
-  object-fit: cover;
+.header {
   position: relative;
 }
 
-.infouser {
-  text-align: center;
-  width: 33%;
+.header-img {
+  width: 100%;
+  height: 15rem;
+  object-fit: cover;
 }
 
-.usuario {
+.user-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  align-items: center;
 }
-
 
 .profile-image {
-  width: 20rem;
-  height: 20rem;
+  width: 8rem;
+  height: 8rem;
   border-radius: 50%;
-  position: absolute;
-  top: calc(15rem - -1rem);
-  left: 6%;
-  display: block;
-  border: 1rem solid #333337;
+  margin-right: 1rem;
+  margin-left: 1rem;
 }
 
+.info {
+  flex-grow: 1;
+}
 
-.img1{
-  width: 33%;
+.info h1 {
+  margin-bottom: 0.25rem;
+}
+
+.info h2 {
+  margin-top: 0.25rem;
 }
 
 .email {
-  font-size: 1rem;
-  width: 33%;
-  margin: auto;
-  text-align: center;
+  font-size: 0.8rem;
 }
 
 .rose {
   color: #FF008C;
-  font-size: 2rem;
-}
-
-.act-rev{
-  width: 100%;
-  margin-top: 15rem;
+  font-size: 1.5rem;
+  margin-top: 2rem; 
   text-align: center;
+}
+
+.activities-reviews {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.actividades{
+.activities,
+.reviews {
   width: 100%;
-  margin: auto;
-}
-
-.entradas{
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
   margin-top: 2rem;
-  align-items: center;
 }
 
+.entries {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Estilos para móvil */
+@media screen and (max-width: 479px) {
+  .profile-image {
+    width: 6rem;
+    height: 6rem;
+  }
+
+  .email {
+    font-size: 0.7rem;
+  }
+
+  .rose {
+    font-size: 1.2rem;
+  }
+
+  .activities,
+  .reviews {
+    margin-top: 1rem;
+  }
+}
 </style>
