@@ -4,6 +4,11 @@
       <h1>
         ¡Bienvenido a RASBIOTECA, el futuro de la vida nocturna comienza aquí!</h1>
       <button>Entradas</button>
+     <RouterLink to="/"> 
+      <button v-on:click="handleLogout">LogOut</button>
+
+     </RouterLink> 
+
     </div>
   </div>
   <div class="upcoming">
@@ -14,6 +19,7 @@
 
   </div>
 </template>
+
 <script>
 import EntradaVue from '../components/EntradaVue.vue'
 
@@ -21,9 +27,17 @@ export default {
   name: 'HomeView',
   components: {
     EntradaVue,
+  },
+  methods: {
+    handleLogout() {
+      localStorage.clear();
+      console.log("Sesión Cerrada")
+    }
   }
 }
 </script>
+
+
 
 <style scoped>
 .home {

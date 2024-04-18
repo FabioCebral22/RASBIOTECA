@@ -2,8 +2,8 @@
   <div class="body">
     <div class="header">
       <img src="/public/img/discoteca.jpg" class="header-img">
-      <div class="user-info">
-        <img v-if="user" :src="user.profile_image" alt="Profile image" class="profile-image">
+      <div class="user-info" v-if="user">
+        <img :src="user.profile_image" alt="Profile image" class="profile-image">
         <div class="info">
           <h1>{{ user.client_name }}</h1>
           <h2>({{ user.client_nickname }})</h2>
@@ -27,9 +27,9 @@
   </div>
 </template>
 
-
 <script>
 import EntradaVue from '@/components/EntradaVue.vue';
+import router from '@/router';
 
 export default {
   name: 'ProfileView',
@@ -64,11 +64,15 @@ export default {
         } catch (error) {
           console.error('Error:', error);
         }
+      } else {
+        console.log("No hay token");
+        router.push("/");
       }
     }
   }
 }
 </script>
+
 
 <style scoped>
 .body {

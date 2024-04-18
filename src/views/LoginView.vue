@@ -55,7 +55,7 @@ export default {
           const data = await response.json();
           console.log('Login successful');
           localStorage.setItem('token', data.body.token);
-          this.$router.push('/');
+          this.$router.push('/home');
         } else {
           console.error('Login failed');
         }
