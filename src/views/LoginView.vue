@@ -125,14 +125,13 @@ main {
 }
 
 /* Button Group */
-
 .btn-group {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   gap: 5px;
-  margin-bottom: 32px;
+  margin-bottom: 32px0px;
 }
 
 .btn-group .btn {
