@@ -11,6 +11,15 @@
           <p class="email">{{ user.client_email }}</p>
         </div>
       </div>
+      <div class="company-info" v-if="company">
+        <!-- <img :src="user.profile_image" alt="Profile image" class="profile-image"> -->
+        <img src="/public/img/discoteca.jpg" alt="Profile image" class="profile-image">
+        <div class="info">
+          <h1>{{ company.company_name }}</h1>
+          <h2>({{ company.company_email }})</h2>
+          <p class="email">{{ company.company_info }}</p>
+        </div>
+      </div>
     </div>
 
     <div class="activities-reviews">
@@ -28,9 +37,11 @@
   </div>
 </template>
 
+
 <script>
 import EntradaVue from '@/components/EntradaVue.vue';
 import router from '@/router';
+import * as jwt_decode from 'jwt-decode';
 
 export default {
   name: 'ProfileView',
@@ -39,12 +50,11 @@ export default {
   },
   data() {
     return {
-      user: null
+      user: null,
+      company:null
     };
   },
-  created() {
-    this.fetchUserData();
-  },
+
   methods: {
     async fetchUserData() {
       const token = localStorage.getItem('token');
@@ -69,8 +79,61 @@ export default {
         console.log("No hay token");
         router.push("/");
       }
+    },
+    async fetchCompanyData() {
+  const token = localStorage.getItem('token');
+  if (token) {
+    try {
+      const response = await fetch('http://localhost:3001/api/company/profile', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      if (response.ok) {
+        const data = await response.json();
+       this.company = data.body
+      } else {
+        console.error('Error fetching company data');
+      }
+    } catch (error) {
+      console.error('Error:', error);
     }
+  } else {
+    console.log("No hay token");
+    router.push("/");
   }
+}
+,
+
+    checkIsCompany(token) {
+      try {
+        const tokenParts = token.split('.');
+
+        const payload = JSON.parse(atob(tokenParts[1]));
+        if (payload.companyData.isCompany === true) {
+          return true;
+        } else {
+          return false;
+        }
+      } catch (error) {
+        console.error('Error al decodificar el token:', error);
+        return false;
+      }
+    }
+  },
+  created() {
+    const token = localStorage.getItem('token');
+
+    if (this.checkIsCompany(token)) {
+      console.log('El token contiene la propiedad isCompany en true.');
+      this.fetchCompanyData()
+    } else {
+      console.log('El token no contiene la propiedad isCompany en true.');
+      this.fetchUserData();
+    }
+  },
+  
 }
 </script>
 
