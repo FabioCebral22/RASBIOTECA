@@ -1,123 +1,43 @@
 <template>
   <div class="body">
     <div class="header">
-      <img src="/public/img/discoteca.jpg" class="header-img">
-      <div class="user-info" v-if="user">
-        <!-- <img :src="user.profile_image" alt="Profile image" class="profile-image"> -->
-        <img src="/public/img/discoteca.jpg" alt="Profile image" class="profile-image">
-        <div class="info">
-          <h1>{{ user.client_name }}</h1>
-          <h2>({{ user.client_nickname }})</h2>
-          <p class="email">{{ user.client_email }}</p>
-        </div>
+      <ProfileClient v-if="user"/>
+      <ProfileCompany v-if="company"/>
       </div>
-      <div class="company-info" v-if="company">
-        <!-- <img :src="user.profile_image" alt="Profile image" class="profile-image"> -->
-        <img src="/public/img/discoteca.jpg" alt="Profile image" class="profile-image">
-        <div class="info">
-          <h1>{{ company.company_name }}</h1>
-          <h2>({{ company.company_email }})</h2>
-          <p class="email">{{ company.company_info }}</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="activities-reviews">
-      <section class="activities">
-        <h1 class="rose">Actividades Recientes</h1>
-        <div class="entries">
-          <EntradaVue />
-        </div>
-      </section>
-
-      <section class="reviews">
-        <h1 class="rose">Reviews</h1>
-      </section>
-    </div>
   </div>
 </template>
 
-
 <script>
 import EntradaVue from '@/components/EntradaVue.vue';
+import ProfileClient from '@/components/ProfileClient.vue';
+import ProfileCompany from '@/components/ProfileCompany.vue';
 import router from '@/router';
-import * as jwt_decode from 'jwt-decode';
 
 export default {
   name: 'ProfileView',
   components: {
     EntradaVue,
+    ProfileClient,
+    ProfileCompany
   },
   data() {
     return {
-      user: null,
-      company:null
+      user: false,
+      company: false
     };
   },
-
   methods: {
-    async fetchUserData() {
-      const token = localStorage.getItem('token');
-      if (token) {
-        try {
-          const response = await fetch('http://localhost:3001/api/clients/profile', {
-            method: 'GET',
-            headers: {
-              'Authorization': `Bearer ${token}`
-            }
-          });
-          if (response.ok) {
-            const data = await response.json();
-            this.user = data.body;
-          } else {
-            console.error('Error fetching user data');
-          }
-        } catch (error) {
-          console.error('Error:', error);
-        }
-      } else {
-        console.log("No hay token");
-        router.push("/");
-      }
-    },
-    async fetchCompanyData() {
-  const token = localStorage.getItem('token');
-  if (token) {
-    try {
-      const response = await fetch('http://localhost:3001/api/company/profile', {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-      if (response.ok) {
-        const data = await response.json();
-       this.company = data.body
-      } else {
-        console.error('Error fetching company data');
-      }
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  } else {
-    console.log("No hay token");
-    router.push("/");
-  }
-}
-,
-
     checkIsCompany(token) {
       try {
-        const tokenParts = token.split('.');
-
-        const payload = JSON.parse(atob(tokenParts[1]));
-        if (payload.companyData.isCompany === true) {
-          return true;
+        if (token) {
+          const tokenParts = token.split('.');
+          const payload = JSON.parse(atob(tokenParts[1]));
+          return payload.companyData && payload.companyData.isCompany === true;
         } else {
           return false;
         }
       } catch (error) {
-        console.error('Error al decodificar el token:', error);
+        console.error('Error decoding the token:', error);
         return false;
       }
     }
@@ -127,14 +47,15 @@ export default {
 
     if (this.checkIsCompany(token)) {
       console.log('El token contiene la propiedad isCompany en true.');
-      this.fetchCompanyData()
+      this.company = true;
+      this.user = false;
     } else {
       console.log('El token no contiene la propiedad isCompany en true.');
-      this.fetchUserData();
+      this.company = false;
+      this.user = true;
     }
   },
-  
-}
+};
 </script>
 
 <style scoped>
@@ -193,7 +114,7 @@ export default {
 .rose {
   color: #FF008C;
   font-size: 1.5rem;
-  margin-top: 2rem; 
+  margin-top: 2rem;
   text-align: center;
 }
 
