@@ -3,7 +3,6 @@
     <div class="header">
       <img src="/public/img/discoteca.jpg" class="header-img">
       <div class="user-info" v-if="user">
-        <!-- <img :src="user.profile_image" alt="Profile image" class="profile-image"> -->
         <img src="/public/img/discoteca.jpg" alt="Profile image" class="profile-image">
         <div class="info">
           <h1>{{ user.client_name }}</h1>
@@ -12,12 +11,13 @@
         </div>
       </div>
       <div class="company-info" v-if="company">
-        <!-- <img :src="user.profile_image" alt="Profile image" class="profile-image"> -->
         <img src="/public/img/discoteca.jpg" alt="Profile image" class="profile-image">
         <div class="info">
           <h1>{{ company.company_name }}</h1>
           <h2>({{ company.company_email }})</h2>
           <p class="email">{{ company.company_info }}</p>
+          <button v-on:click="mostrarModal">AÑADIR CLUB</button>
+          <ClubFormModal :show="this.showModal" @close="showModal = false" />
         </div>
       </div>
     </div>
@@ -34,28 +34,36 @@
         <h1 class="rose">Reviews</h1>
       </section>
     </div>
+
+
+    <ClubFormModal :show="showModal" @close="showModal = false" />
   </div>
 </template>
-
 
 <script>
 import EntradaVue from '@/components/EntradaVue.vue';
 import router from '@/router';
-import * as jwt_decode from 'jwt-decode';
+import ClubFormModal from '../components/ClubForm.vue';
 
 export default {
   name: 'ProfileView',
   components: {
     EntradaVue,
+    ClubFormModal,
   },
   data() {
     return {
       user: null,
-      company:null
+      company: null,
+      showModal: false,
     };
   },
-
   methods: {
+    mostrarModal() {
+      this.showModal = true;
+      console.log("Se ejecuto en : " + this.showModal)
+    },
+
     async fetchUserData() {
       const token = localStorage.getItem('token');
       if (token) {
@@ -81,35 +89,32 @@ export default {
       }
     },
     async fetchCompanyData() {
-  const token = localStorage.getItem('token');
-  if (token) {
-    try {
-      const response = await fetch('http://localhost:3001/api/company/profile', {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}`
+      const token = localStorage.getItem('token');
+      if (token) {
+        try {
+          const response = await fetch('http://localhost:3001/api/company/profile', {
+            method: 'GET',
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          });
+          if (response.ok) {
+            const data = await response.json();
+            this.company = data.body
+          } else {
+            console.error('Error fetching company data');
+          }
+        } catch (error) {
+          console.error('Error:', error);
         }
-      });
-      if (response.ok) {
-        const data = await response.json();
-       this.company = data.body
       } else {
-        console.error('Error fetching company data');
+        console.log("No hay token");
+        router.push("/");
       }
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  } else {
-    console.log("No hay token");
-    router.push("/");
-  }
-}
-,
-
+    },
     checkIsCompany(token) {
       try {
         const tokenParts = token.split('.');
-
         const payload = JSON.parse(atob(tokenParts[1]));
         if (payload.companyData.isCompany === true) {
           return true;
@@ -133,8 +138,7 @@ export default {
       this.fetchUserData();
     }
   },
-  
-}
+};
 </script>
 
 <style scoped>
@@ -193,7 +197,7 @@ export default {
 .rose {
   color: #FF008C;
   font-size: 1.5rem;
-  margin-top: 2rem; 
+  margin-top: 2rem;
   text-align: center;
 }
 
