@@ -30,6 +30,8 @@
 </template>
 
 <script>
+import router from '@/router';
+
 export default {
     data() {
         return {
@@ -80,9 +82,10 @@ export default {
             Object.keys(this.form).forEach(key => formData.append(key, this.form[key]));
             console.log(formData);
             try {
-                const response = await fetch('http://localhost:3001/api/club', {
+                const response = await fetch('http://localhost:3001/api/clubs', {
                     method: 'POST',
-                    body: formDataa
+                    body: formData,
+                    
                 });
 
                 if (!response.ok) {
@@ -91,6 +94,8 @@ export default {
 
                 const data = await response.json();
                 console.log(data);
+
+                this.$router.push('/home');
             } catch (error) {
                 console.error(error);
             }
