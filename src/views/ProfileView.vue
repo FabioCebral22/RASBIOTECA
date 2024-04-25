@@ -7,7 +7,6 @@
   </div>
 </template>
 
-
 <script>
 import EntradaVue from '@/components/EntradaVue.vue';
 import ProfileClient from '@/components/ProfileClient.vue';
@@ -27,7 +26,6 @@ export default {
       company: false
     };
   },
-
   methods: {
     checkIsCompany(token) {
       try {
@@ -57,8 +55,7 @@ export default {
       this.user = true;
     }
   },
-  
-}
+};
 </script>
 
 <style scoped>
@@ -117,7 +114,7 @@ export default {
 .rose {
   color: #FF008C;
   font-size: 1.5rem;
-  margin-top: 2rem; 
+  margin-top: 2rem;
   text-align: center;
 }
 
