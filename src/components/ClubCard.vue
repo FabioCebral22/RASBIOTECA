@@ -1,26 +1,29 @@
 <template>
-    <div class="club-card">
-      <div class="club-image">
-        <img src="/public/img/discoteca.jpg" :alt="club.club_name">
-      </div>
-      <div class="club-details">
-        <div class="club-info">
-          <h1 class="club-name">{{ club.club_name }}</h1>
-          <p class="club-description">{{ club.club_description }}</p>
-        </div>
-        <div class="club-schedule">
-          <h3>Horario:</h3>
-          <p>{{ club.club_schedule }}</p>
-        </div>
-        <div class="club-rules">
-          <h3>Normas del club:</h3>
-          <p>{{ club.club_rules }}</p>
-        </div>
-      </div>
+  <div class="club-card">
+    <div class="club-image">
+      <img src="/public/img/discoteca.jpg" :alt="club.club_name">
     </div>
+    <div class="club-details">
+      <div class="club-info">
+        <h1 class="club-name">{{ club.club_name }}</h1>
+        <p class="club-description">{{ club.club_description }}</p>
+      </div>
+      <div class="club-schedule">
+        <h3>Horario:</h3>
+        <p>{{ club.club_schedule }}</p>
+      </div>
+      <div class="club-rules">
+        <h3>Normas del club:</h3>
+        <p>{{ club.club_rules }}</p>
+      </div>
+      <button class="btn-delete" @click="deleteClub(club.club_id)">Eliminar Club</button>
+    </div>
+  </div>
   </template>
   
   <script>
+import router from '@/router';
+
   export default {
     name: 'ClubCard',
     props: {
@@ -29,6 +32,29 @@
         required: true,
       },
     },
+  methods: {
+    async deleteClub(clubId) {
+  try {
+    const response = await fetch('http://localhost:3001/api/club/delete', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ club_id: clubId })
+    });
+    window.location.reload();
+console.log("lodlasd")
+    if (!response.ok) {
+      const errorMessage = await response.text();
+      throw new Error(errorMessage || 'Error al eliminar el club');
+    }
+  } catch (error) {
+    console.error('Error al eliminar el club:', error.message);
+    throw error;
+  }
+}
+
+  }
   };
   </script>
   
@@ -78,5 +104,19 @@
   .club-rules p {
     font-size: 1rem;
   }
+  .btn-delete {
+    background-color: #ff4136; /* Color de fondo rojo */
+    color: white; /* Color del texto blanco */
+    padding: 0.5rem 1rem; /* Espaciado interno */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Borde redondeado */
+    cursor: pointer; /* Cursor al pasar por encima */
+    transition: background-color 0.3s ease; /* Transición suave del color de fondo */
+  }
+  
+  .btn-delete:hover {
+    background-color: #d60000; /* Cambio de color al pasar por encima */
+  }
+  
   </style>
   
