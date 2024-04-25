@@ -2,11 +2,12 @@
   <div class="app">
     <HeaderVue/>
     <router-view/>
-    <FooterVue/>
   </div>
+  <FooterVue/>
 </template>
 
 <script>
+import FooterVue from './components/FooterVue.vue';
 import router from './router'
 import HeaderVue from './components/HeaderVue.vue';
 
@@ -14,6 +15,7 @@ export default {
   name: 'App',
   components: {
     HeaderVue,
+    FooterVue
   },
   router
 }
