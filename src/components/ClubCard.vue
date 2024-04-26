@@ -1,5 +1,4 @@
 <template>
-<template>
     <router-link :to="{ name: 'ClubDetails', params: { clubId: club.club_id }}" class="club-link">
         <div class="club-card">
             <div class="club-image">
@@ -17,51 +16,28 @@
                     <p>{{ club.club_rules }}</p>
                 </div>
             </div>
-            <button class="btn-delete" @click="deleteClub(club.club_id)">Eliminar Club</button>
         </div>
     </router-link>
 </template>
-  
-  <script>
-  export default {
+
+<script>
+export default {
     name: 'ClubCard',
     props: {
-      club: {
-        type: Object,
-        required: true,
-      },
-    },
-  methods: {
-    async deleteClub(clubId) {
-  try {
-    const response = await fetch('http://localhost:3001/api/club/delete', {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ club_id: clubId })
-    });
-    window.location.reload();
-console.log("lodlasd")
-    if (!response.ok) {
-      const errorMessage = await response.text();
-      throw new Error(errorMessage || 'Error al eliminar el club');
+        club: {
+            type: Object,
+            required: true,
+        },
     }
-  } catch (error) {
-    console.error('Error al eliminar el club:', error.message);
-    throw error;
-  }
-}
+};
+</script>
 
-  }
-  };
-  </script>
-  
-  <style scoped>
-    .club-link {
+<style scoped>
+.club-link {
     text-decoration: none; /* Quitar el subrayado del enlace */
 }
-  .club-card {
+
+.club-card {
     display: flex;
     background-color: #1a1a1d;
     color: #FFFFFF;
@@ -105,20 +81,5 @@ console.log("lodlasd")
 .club-schedule p,
 .club-rules p {
     font-size: 1rem;
-  }
-  .btn-delete {
-    background-color: #ff4136; /* Color de fondo rojo */
-    color: white; /* Color del texto blanco */
-    padding: 0.5rem 1rem; /* Espaciado interno */
-    border: none; /* Sin borde */
-    border-radius: 5px; /* Borde redondeado */
-    cursor: pointer; /* Cursor al pasar por encima */
-    transition: background-color 0.3s ease; /* Transición suave del color de fondo */
-  }
-  
-  .btn-delete:hover {
-    background-color: #d60000; /* Cambio de color al pasar por encima */
-  }
-  
-  </style>
-  
+}
+</style>
