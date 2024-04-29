@@ -14,7 +14,7 @@
     <div class="content">
       <div class="clubs-list" v-if="clubs && clubs.length > 0">
         <h2>Clubs que te pertenecen</h2> 
-        <a href="/CreateClub" class="btn-create">+</a>
+        <a href="/CreateClub" class="btn-create"><>AÑADIR</a>
         <ClubCard v-for="club in clubs" :key="club.club_id" :club="club" />
       </div>
       <div v-else>
@@ -112,6 +112,24 @@ export default {
 </script>
 
 <style scoped>
+.btn-create {
+  display: inline-block;
+  background-color: #4CAF50; /* Color de fondo verde */
+  color: white; /* Color del texto blanco */
+  padding: 10px 20px; /* Espaciado interno */
+  text-align: center; /* Alineación del texto */
+  text-decoration: none; /* Sin subrayado */
+  border-radius: 5px; /* Borde redondeado */
+  transition: background-color 0.3s ease; /* Transición suave del color de fondo */
+}
+
+.btn-create:hover {
+  background-color: #45a049; /* Cambio de color al pasar por encima */
+}
+
+.btn-create:active {
+  background-color: #3e8e41; /* Cambio de color al hacer clic */
+}
 /* Estilos para PC y tablet */
 .body {
   color: #E3E3E3;
