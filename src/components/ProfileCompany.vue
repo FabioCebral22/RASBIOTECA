@@ -14,13 +14,14 @@
     <div class="content">
       <div class="clubs-list" v-if="clubs && clubs.length > 0">
         <h2>Clubs que te pertenecen</h2> 
-        <a href="/CreateClub" class="btn-create"><>AÑADIR</a>
         <ClubCard v-for="club in clubs" :key="club.club_id" :club="club" />
       </div>
       <div v-else>
         <p>No se encontraron clubes para esta compañía.</p>
       </div>
     </div>
+    <a href="/CreateClub" class="btn-create"><>AÑADIR</a>
+
   </div>
 </template>
 

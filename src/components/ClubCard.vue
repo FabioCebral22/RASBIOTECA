@@ -2,9 +2,9 @@
 
     <div class="club-card">
         <router-link :to="{ name: 'ClubDetails', params: { clubId: club.club_id } }" class="club-link">
-        <div class="club-image">
-            <img src="/public/img/discoteca.jpg" :alt="club.club_name">
-        </div>
+            <div class="club-image">
+                <img src="/public/img/discoteca.jpg" :alt="club.club_name">
+            </div>
         </router-link>
 
         <div class="club-details">
@@ -18,7 +18,7 @@
                 <h3>Normas del club:</h3>
                 <p>{{ club.club_rules }}</p>
             </div>
-            <button class="btn-delete" @click="deleteClub(club.club_id)">Eliminar Club</button>
+            <button v-if="isCompany" class="btn-delete" @click="deleteClub(club.club_id)">Eliminar Club</button>
 
         </div>
     </div>
@@ -33,6 +33,11 @@ export default {
             type: Object,
             required: true,
         },
+    },
+    data() {
+        return {
+            isCompany:false
+        };
     },
     methods: {
         async deleteClub(clubId) {
@@ -56,9 +61,32 @@ export default {
                 console.error('Error al eliminar el club:', error.message);
                 throw error;
             }
+        },
+        checkIsCompany(token) {
+            try {
+                if (token) {
+                    const tokenParts = token.split('.');
+                    const payload = JSON.parse(atob(tokenParts[1]));
+                    return payload.companyData && payload.companyData.isCompany === true;
+                } else {
+                    return false;
+                }
+            } catch (error) {
+                console.error('Error decoding the token:', error);
+                return false;
+            }
         }
+    },
+    created () {
+        const token = localStorage.getItem('token');
 
+        if(this.checkIsCompany(token)) {
+    console.log('El token contiene la propiedad isCompany en true.');
+            this.isCompany=true
+
+}
     }
+
 };
 </script>
 
@@ -73,7 +101,6 @@ export default {
     border: none;
     /* Sin borde */
     border-radius: 5px;
-    /* Borde redondeado */
     cursor: pointer;
     /* Cursor al pasar por encima */
     transition: background-color 0.3s ease;
@@ -86,8 +113,7 @@ export default {
 }
 
 .club-link {
-    text-decoration: none;
-    /* Quitar el subrayado del enlace */
+    text-decoration: none; /* Quitar el subrayado del enlace */
 }
 
 .club-card {
@@ -95,14 +121,16 @@ export default {
     background-color: #1a1a1d;
     color: #FFFFFF;
     border-radius: 10px;
-    overflow: hidden;
-    /* Evitar que el enlace afecte al tamaño */
+    overflow: hidden; /* Evitar que el enlace afecte al tamaño */
+    margin: 20px
 }
 
 .club-image {
     flex: 0 0 15rem;
     overflow: hidden;
     border-radius: 10px 0 0 10px;
+    height: 23rem;
+    width: 17rem;
 }
 
 .club-image img {
