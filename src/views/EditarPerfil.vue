@@ -1,45 +1,35 @@
 <template>
   <div class="editar-perfil">
     <h1>Información de Usuario</h1>
-    <img src="/img/discoteca1.jpg" alt="Image" class="profile-image" />
+    <img :src="profile.client_img" alt="Image" class="profile-image" />
     <form @submit.prevent="submitForm">
       <div class="form-group">
-        <label for="name">Nombre:</label>
-        <input id="name" v-model="profile.name" type="text" class="input-field" />
-      </div>
-
-      <div class="form-group">
-        <label for="birthdate">Fecha de nacimiento:</label>
-        <input id="birthdate" v-model="profile.birthdate" type="date" class="input-field" />
-      </div>
-
-      <div class="form-group">
-        <label for="phone">Teléfono:</label>
-        <input id="phone" v-model="profile.phone" type="tel" class="input-field" />
-      </div>
-
-      <div class="form-group">
-        <label for="city">Ciudad:</label>
-        <input id="city" v-model="profile.city" type="text" class="input-field" />
-      </div>
-
-      <div class="form-group">
-        <label for="favoriteClub">Discoteca favorita:</label>
-        <input id="favoriteClub" v-model="profile.favoriteClub" type="text" class="input-field" />
-      </div>
-
-      <div class="form-group">
         <label for="email">Email:</label>
-        <input id="email" v-model="profile.email" type="email" class="input-field" />
+        <input id="email" v-model="profile.client_email" type="email" class="input-field" />
       </div>
 
       <div class="form-group">
-        <label for="aboutMe">Acerca de mí:</label>
-        <textarea id="aboutMe" v-model="profile.aboutMe" class="input-field"></textarea>
+        <label for="password">Contraseña:</label>
+        <input id="password" v-model="profile.client_password" type="password" class="input-field" />
+      </div>
+
+      <div class="form-group">
+        <label for="nickname">Apodo:</label>
+        <input id="nickname" v-model="profile.client_nickname" type="text" class="input-field" />
+      </div>
+
+      <div class="form-group">
+        <label for="profilePicture">Foto de Perfil:</label>
+        <input id="profilePicture" type="file" @change="onFileChange" class="input-field" />
       </div>
 
       <button type="submit" class="submit-button">Enviar</button>
     </form>
+
+    <div>
+      <h2>Datos no editables</h2>
+      <p>Nombre: {{ profile.client_name }}</p>
+    </div>
   </div>
 </template>
 
@@ -49,19 +39,51 @@ export default {
   data() {
     return {
       profile: {
-        name: '',
-        birthdate: '',
-        phone: '',
-        city: '',
-        favoriteClub: '',
-        email: '',
-        aboutMe: ''
+        client_id: '',
+        client_email: '',
+        client_password: '',
+        client_nickname: '',
+        client_img: '',
+        client_name: ''
       }
     }
   },
   methods: {
-    submitForm() {
+    onFileChange(e) {
+      const file = e.target.files[0];
+      this.profile.client_img = URL.createObjectURL(file);
+    },
+    async submitForm() {
+      const formData = new FormData();
+      formData.append('client_email', this.profile.client_email);
+      formData.append('client_password', this.profile.client_password);
+      formData.append('client_nickname', this.profile.client_nickname);
+      formData.append('client_img', this.profile.client_img);
 
+      try {
+        const response = await fetch(`/clients/edit/${this.profile.client_id}`, {
+          method: 'PUT',
+          body: formData
+        });
+        const data = await response.json();
+        console.log(data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  },
+  async created() {
+    try {
+      const response = await fetch('/clients/profile', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      const data = await response.json();
+      this.profile = data.body;
+    } catch (error) {
+      console.error('Error fetching client:', error);
     }
   }
 }

@@ -4,6 +4,9 @@ import LoginView from '@/views/LoginView.vue'
 import RegisterView from '@/views/RegisterView.vue'
 import ProfileView from '@/views/ProfileView.vue'
 import CreateClub from '@/views/CreateClub.vue'
+import LoginAdmin from '@/components/LoginAdmin.vue'
+import RegisterAdmin from '@/components/RegisterAdmin.vue'
+import AdminView from '@/views/AdminView.vue'
 import CreateEvent from '@/views/CreateEvent.vue'
 import ClubsView from '@/views/ClubsView.vue'
 import ClubDetailsView from '@/views/ClubDetailsView.vue'
@@ -40,6 +43,21 @@ const router = createRouter({
       path: '/CreateClub',
       name: 'CreateClub',
       component: CreateClub
+    },
+    {
+      path: '/admin',
+      name: 'admin',
+      component: LoginAdmin
+    },
+    // {
+    //   path: '/admin/register',
+    //   name: 'adminRegister',
+    //   component: RegisterAdmin
+    // }
+    {
+      path: '/adminView',
+      name: 'adminView',
+      component: AdminView
     },
     {
       path: '/clubs',

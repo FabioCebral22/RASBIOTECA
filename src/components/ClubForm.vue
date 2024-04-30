@@ -1,6 +1,5 @@
 <template>
     <div class="modal" v-if="show">
-      <!-- Contenido del modal -->
       <div class="modal-content">
         <form @submit.prevent="submitClubData">
           <div class="logo-container btn-group">
