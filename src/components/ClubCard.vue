@@ -43,6 +43,7 @@ export default {
     color: #FFFFFF;
     border-radius: 10px;
     overflow: hidden; /* Evitar que el enlace afecte al tamaño */
+    margin: 20px
 }
 
 .club-image {
