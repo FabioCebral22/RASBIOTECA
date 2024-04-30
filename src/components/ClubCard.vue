@@ -1,7 +1,7 @@
 <template>
     <div class="club-card">
       <div class="club-image">
-        <img src="/public/img/discoteca.jpg" :alt="club.club_name">
+        <img :src="'http://localhost:3001' + club.club_img">
       </div>
       <div class="club-details">
         <div class="club-info">
