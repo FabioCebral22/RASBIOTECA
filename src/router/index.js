@@ -7,6 +7,8 @@ import CreateClub from '@/views/CreateClub.vue'
 import LoginAdmin from '@/components/LoginAdmin.vue'
 import RegisterAdmin from '@/components/RegisterAdmin.vue'
 import AdminView from '@/views/AdminView.vue'
+import ClubsView from '@/views/ClubsView.vue'
+import ClubDetailsView from '@/views/ClubDetailsView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -55,6 +57,16 @@ const router = createRouter({
       path: '/adminView',
       name: 'adminView',
       component: AdminView
+    },
+    {
+      path: '/clubs',
+      name: 'Clubs',
+      component: ClubsView
+    },
+    {
+      path: '/clubs/:clubId',
+      name: 'ClubDetails',
+      component: ClubDetailsView
     }
   ]
 })
