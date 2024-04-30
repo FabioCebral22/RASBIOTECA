@@ -4,6 +4,7 @@ import LoginView from '@/views/LoginView.vue'
 import RegisterView from '@/views/RegisterView.vue'
 import ProfileView from '@/views/ProfileView.vue'
 import CreateClub from '@/views/CreateClub.vue'
+import CreateEvent from '@/views/CreateEvent.vue'
 import ClubsView from '@/views/ClubsView.vue'
 import ClubDetailsView from '@/views/ClubDetailsView.vue'
 
@@ -49,7 +50,15 @@ const router = createRouter({
       path: '/clubs/:clubId',
       name: 'ClubDetails',
       component: ClubDetailsView
+    },
+    {
+      path: '/CreateEvent/:clubId',
+      name: 'CreateEvent',
+      props: true,
+      component: CreateEvent,
+
     }
+    
   ]
 })
 
