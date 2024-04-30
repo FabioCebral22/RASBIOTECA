@@ -1,23 +1,28 @@
 <template>
-    <router-link :to="{ name: 'ClubDetails', params: { clubId: club.club_id }}" class="club-link">
-        <div class="club-card">
+
+    <div class="club-card">
+        <router-link :to="{ name: 'ClubDetails', params: { clubId: club.club_id } }" class="club-link">
             <div class="club-image">
                 <img src="/public/img/discoteca.jpg" :alt="club.club_name">
             </div>
-            <div class="club-details">
-                <h1 class="club-name">{{ club.club_name }}</h1>
-                <p class="club-description">{{ club.club_description }}</p>
-                <div class="club-schedule">
-                    <h3>Horario:</h3>
-                    <p>{{ club.club_schedule }}</p>
-                </div>
-                <div class="club-rules">
-                    <h3>Normas del club:</h3>
-                    <p>{{ club.club_rules }}</p>
-                </div>
+        </router-link>
+
+        <div class="club-details">
+            <h1 class="club-name">{{ club.club_name }}</h1>
+            <p class="club-description">{{ club.club_description }}</p>
+            <div class="club-schedule">
+                <h3>Horario:</h3>
+                <p>{{ club.club_schedule }}</p>
             </div>
+            <div class="club-rules">
+                <h3>Normas del club:</h3>
+                <p>{{ club.club_rules }}</p>
+            </div>
+            <button v-if="isCompany" class="btn-delete" @click="deleteClub(club.club_id)">Eliminar Club</button>
+
         </div>
-    </router-link>
+    </div>
+
 </template>
 
 <script>
@@ -28,11 +33,85 @@ export default {
             type: Object,
             required: true,
         },
+    },
+    data() {
+        return {
+            isCompany:false
+        };
+    },
+    methods: {
+        async deleteClub(clubId) {
+            try {
+                const response = await fetch('http://localhost:3001/api/club/delete', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ club_id: clubId })
+                });
+                console.log("HOLA" + clubId)
+                if (!response.ok) {
+                    const errorMessage = await response.text();
+                    throw new Error(errorMessage || 'Error al eliminar el club');
+                }
+
+                window.location.reload();
+
+            } catch (error) {
+                console.error('Error al eliminar el club:', error.message);
+                throw error;
+            }
+        },
+        checkIsCompany(token) {
+            try {
+                if (token) {
+                    const tokenParts = token.split('.');
+                    const payload = JSON.parse(atob(tokenParts[1]));
+                    return payload.companyData && payload.companyData.isCompany === true;
+                } else {
+                    return false;
+                }
+            } catch (error) {
+                console.error('Error decoding the token:', error);
+                return false;
+            }
+        }
+    },
+    created () {
+        const token = localStorage.getItem('token');
+
+        if(this.checkIsCompany(token)) {
+    console.log('El token contiene la propiedad isCompany en true.');
+            this.isCompany=true
+
+}
     }
+
 };
 </script>
 
 <style scoped>
+.btn-delete {
+    background-color: #ff4136;
+    /* Color de fondo rojo */
+    color: white;
+    /* Color del texto blanco */
+    padding: 0.5rem 1rem;
+    /* Espaciado interno */
+    border: none;
+    /* Sin borde */
+    border-radius: 5px;
+    cursor: pointer;
+    /* Cursor al pasar por encima */
+    transition: background-color 0.3s ease;
+    /* Transición suave del color de fondo */
+}
+
+.btn-delete:hover {
+    background-color: #d60000;
+    /* Cambio de color al pasar por encima */
+}
+
 .club-link {
     text-decoration: none; /* Quitar el subrayado del enlace */
 }
@@ -50,6 +129,8 @@ export default {
     flex: 0 0 15rem;
     overflow: hidden;
     border-radius: 10px 0 0 10px;
+    height: 23rem;
+    width: 17rem;
 }
 
 .club-image img {
