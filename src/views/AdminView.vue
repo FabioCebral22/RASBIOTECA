@@ -4,7 +4,7 @@
         <div class="row">
             <div class="col-4" v-for="client in visibleClients" :key="client.id">
                 <h3>{{ client.client_name }}</h3>
-                <button @click="deleteClient(client.id)">Delete</button>
+                <button @click="toggleClientState(client)">{{ client.activeText }}</button>
             </div>
         </div>
         <button v-if="clients.length > visibleClientsCount" @click="showMoreClients">Ver más</button>
@@ -13,8 +13,10 @@
         <div class="row">
             <div class="col-4" v-for="club in visibleClubs" :key="club.id">
                 <h3>{{ club.club_name }}</h3>
-                <img :src="'http://localhost:3001' + club.club_img" alt="Club image">
-                <button @click="deleteClub(club.id)">Delete</button>
+                <div class="club-image">
+                    <img :src='"http://localhost:3001" + club.club_img' :alt="club.club_name">
+                </div>
+                <button @click="deleteClub(club.id)">Eliminar</button>
             </div>
         </div>
         <button v-if="clubs.length > visibleClubsCount" @click="showMoreClubs">Ver más</button>
@@ -22,7 +24,6 @@
 </template>
 
 <script>
-
 export default {
     data() {
         return {
@@ -41,39 +42,66 @@ export default {
         },
     },
     async created() {
-        this.clients = await this.fetchClients();
-        this.clubs = await this.fetchClubs();
+        await this.fetchClients();
+        await this.fetchClubs();
+        console.log(this.clubs)
     },
     methods: {
         async fetchClients() {
-            const response = await fetch('http://localhost:3001/api/clients/all');
-            const data = await response.json();
-            return data;
+            try {
+                const response = await fetch('http://localhost:3001/api/clients/all');
+                const data = await response.json();
+                this.clients = data.map(client => ({
+                    ...client,
+                    activeText: client.client_state ? 'Desactivar' : 'Activar',
+                }));
+            } catch (error) {
+                console.error('Error fetching clients:', error);
+            }
         },
         async fetchClubs() {
-            const response = await fetch('http://localhost:3001/api/club/all');
-            const data = await response.json();
-            return data;
+            try {
+                const response = await fetch('http://localhost:3001/api/club/all');
+                const data = await response.json();
+                this.clubs = data;
+            } catch (error) {
+                console.error('Error fetching clubs:', error);
+            }
         },
-        async deleteClient(id) {
-            await fetch('http://localhost:3001/api/clients/delete', {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ client_id: id })
-            });
-            this.clients = this.clients.filter(client => client.id !== id);
+        async toggleClientState(client) {
+            try {
+                const response = await fetch('http://localhost:3001/api/clients/toggle-state', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ client_id: client.client_id }),
+                });
+                if (response.ok) {
+                    // Cambiar el estado del cliente localmente
+                    client.client_state = !client.client_state;
+                    // Cambiar el texto del botón
+                    client.activeText = client.client_state ? 'Desactivar' : 'Activar';
+                } else {
+                    console.error('Error toggling client state:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error toggling client state:', error);
+            }
         },
         async deleteClub(id) {
-            await fetch('http://localhost:3001/api/club/delete', {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ club_id: id })
-            });
-            this.clubs = this.clubs.filter(club => club.id !== id);
+            try {
+                await fetch('http://localhost:3001/api/club/delete', {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ club_id: id })
+                });
+                this.clubs = this.clubs.filter(club => club.id !== id);
+            } catch (error) {
+                console.error('Error deleting club:', error);
+            }
         },
         showMoreClients() {
             this.visibleClientsCount = this.clients.length;
@@ -84,6 +112,7 @@ export default {
     },
 };
 </script>
+
 
 <style scoped>
 .row {
