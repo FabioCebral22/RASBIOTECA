@@ -17,7 +17,7 @@
             <section class="activities">
                 <h1 class="rose">Actividades Recientes</h1>
                 <div class="entries">
-                    <EntradaVue />
+                    <EventCard />
                 </div>
             </section>
 
@@ -30,13 +30,13 @@
 
 
 <script>
-import EntradaVue from '@/components/EntradaVue.vue';
+import EventCard from '@/components/EventCard.vue';
 import router from '@/router';
 
 export default {
     name: 'ProfileClient',
     components: {
-        EntradaVue,
+        EventCard,
     },
     data() {
         return {

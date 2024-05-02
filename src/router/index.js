@@ -10,6 +10,7 @@ import AdminView from '@/views/AdminView.vue'
 import CreateEvent from '@/views/CreateEvent.vue'
 import ClubsView from '@/views/ClubsView.vue'
 import ClubDetailsView from '@/views/ClubDetailsView.vue'
+import EventsView from '@/views/EventsView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -75,6 +76,11 @@ const router = createRouter({
       props: true,
       component: CreateEvent,
 
+    },
+    {
+      path: '/events',
+      name: 'EventsView',
+      component: EventsView
     }
     
   ]

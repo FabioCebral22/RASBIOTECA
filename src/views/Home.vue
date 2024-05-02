@@ -13,21 +13,14 @@
   </div>
   <div class="upcoming">
     <h2>Próximamente</h2>
-    <EntradaVue />
-    <EntradaVue />
-    <EntradaVue />
 
   </div>
 </template>
 
 <script>
-import EntradaVue from '../components/EntradaVue.vue'
 
 export default {
   name: 'HomeView',
-  components: {
-    EntradaVue,
-  },
   methods: {
     handleLogout() {
       localStorage.clear();

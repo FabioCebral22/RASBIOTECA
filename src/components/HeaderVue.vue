@@ -8,7 +8,7 @@
       <ul>
         <li><router-link to="/home">Inicio</router-link></li>
         <li><router-link to="/clubs">Clubs</router-link></li>
-        <li><router-link to="/tickets">Entradas</router-link></li>
+        <li><router-link to="/events">Eventos</router-link></li>
         <li><router-link to="/profile">Perfil</router-link></li>
       </ul>
     </nav>

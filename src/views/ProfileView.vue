@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import EntradaVue from '@/components/EntradaVue.vue';
+import EventCard from '@/components/EventCard.vue';
 import ProfileClient from '@/components/ProfileClient.vue';
 import ProfileCompany from '@/components/ProfileCompany.vue';
 import router from '@/router';
@@ -16,7 +16,7 @@ import router from '@/router';
 export default {
   name: 'ProfileView',
   components: {
-    EntradaVue,
+    EventCard,
     ProfileClient,
     ProfileCompany
   },
