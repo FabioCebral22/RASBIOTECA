@@ -7,6 +7,7 @@ import CreateClub from '@/views/CreateClub.vue'
 import LoginAdmin from '@/components/LoginAdmin.vue'
 import RegisterAdmin from '@/components/RegisterAdmin.vue'
 import AdminView from '@/views/AdminView.vue'
+import CreateEvent from '@/views/CreateEvent.vue'
 import ClubsView from '@/views/ClubsView.vue'
 import ClubDetailsView from '@/views/ClubDetailsView.vue'
 
@@ -67,7 +68,15 @@ const router = createRouter({
       path: '/clubs/:clubId',
       name: 'ClubDetails',
       component: ClubDetailsView
+    },
+    {
+      path: '/CreateEvent/:clubId',
+      name: 'CreateEvent',
+      props: true,
+      component: CreateEvent,
+
     }
+    
   ]
 })
 

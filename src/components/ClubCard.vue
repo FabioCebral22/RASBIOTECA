@@ -18,7 +18,10 @@
                 <h3>Normas del club:</h3>
                 <p>{{ club.club_rules }}</p>
             </div>
-            <button v-if="isCompany" class="btn-delete" @click="deleteClub(club.club_id)">Eliminar Club</button>
+            <button v-if="isOwner" class="btn-delete" @click="deleteClub(club.club_id)">Eliminar Club</button>
+            <router-link v-if="isOwner" :to="{ name: 'CreateEvent', params: { clubId: club.club_id } }" class="btn-add">
+  Añadir Evento
+</router-link>
 
         </div>
     </div>
@@ -36,7 +39,8 @@ export default {
     },
     data() {
         return {
-            isCompany:false
+            isCompany:false,
+            isOwner: false,
         };
     },
     methods: {
@@ -67,6 +71,7 @@ export default {
                 if (token) {
                     const tokenParts = token.split('.');
                     const payload = JSON.parse(atob(tokenParts[1]));
+                    console.log('-------'+ payload.companyData.company_email)
                     return payload.companyData && payload.companyData.isCompany === true;
                 } else {
                     return false;
@@ -75,6 +80,32 @@ export default {
                 console.error('Error decoding the token:', error);
                 return false;
             }
+        },
+        async checkIsOwner(token) {
+            try {
+            const tokenParts = token.split('.');
+            const payload = JSON.parse(atob(tokenParts[1]));
+            console.log('-------'+ payload.companyData.company_email)
+            const response = await fetch('http://localhost:3001/api/check-club', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    company_email: payload.companyData.company_email,
+                    company_nif: this.club.company_nif
+                })
+            });
+            const data = await response.json();
+            if (data.exists) {
+                console.log('El club existe para esta empresa.');
+                this.isOwner=true
+            } else {
+                console.log('El club no existe para esta empresa.');
+            }
+        } catch (error) {
+            console.error('Error al verificar el club:', error);
+        }
         }
     },
     created () {
@@ -82,8 +113,9 @@ export default {
 
         if(this.checkIsCompany(token)) {
     console.log('El token contiene la propiedad isCompany en true.');
-            this.isCompany=true
 
+            this.isCompany=true
+            this.checkIsOwner(token)
 }
     }
 
@@ -109,6 +141,27 @@ export default {
 
 .btn-delete:hover {
     background-color: #d60000;
+    /* Cambio de color al pasar por encima */
+}
+
+.btn-add {
+    background-color: #36c6ff;
+    /* Color de fondo rojo */
+    color: white;
+    /* Color del texto blanco */
+    padding: 0.5rem 1rem;
+    /* Espaciado interno */
+    border: none;
+    /* Sin borde */
+    border-radius: 5px;
+    cursor: pointer;
+    /* Cursor al pasar por encima */
+    transition: background-color 0.3s ease;
+    /* Transición suave del color de fondo */
+}
+
+.btn-add:hover {
+    background-color: #1b4edb;
     /* Cambio de color al pasar por encima */
 }
 
