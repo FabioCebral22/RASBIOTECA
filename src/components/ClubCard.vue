@@ -3,7 +3,7 @@
     <div class="club-card">
         <router-link :to="{ name: 'ClubDetails', params: { clubId: club.club_id } }" class="club-link">
             <div class="club-image">
-                <img src="/public/img/discoteca.jpg" :alt="club.club_name">
+                <img :src='"http://localhost:3001" + club.club_img' :alt="club.club_name">
             </div>
         </router-link>
 
