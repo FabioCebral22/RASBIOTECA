@@ -1,34 +1,30 @@
 <template>
   <div class="editar-perfil">
     <h1>Información de Usuario</h1>
-    <img :src="profile.client_img" alt="Image" class="profile-image" />
+    <img :src='"http://localhost:3001" + user.client_img' >
+
     <form @submit.prevent="submitForm">
       <div class="form-group">
-        <label for="email">Email:</label>
-        <input id="email" v-model="profile.client_email" type="email" class="input-field" />
-      </div>
-
-      <div class="form-group">
         <label for="password">Contraseña:</label>
-        <input id="password" v-model="profile.client_password" type="password" class="input-field" />
+        <input id="password" v-model="profile.client_password" type="password" class="input-field" required />
       </div>
 
       <div class="form-group">
         <label for="nickname">Apodo:</label>
-        <input id="nickname" v-model="profile.client_nickname" type="text" class="input-field" />
+        <input id="nickname" v-model="profile.client_nickname" type="text" class="input-field" required />
       </div>
 
       <div class="form-group">
         <label for="profilePicture">Foto de Perfil:</label>
-        <input id="profilePicture" type="file" @change="onFileChange" class="input-field" />
+        <input id="profilePicture" type="file" ref="fileInput" class="input-field" @change="onFileChange" />
       </div>
 
-      <button type="submit" class="submit-button">Enviar</button>
+      <button type="submit" class="submit-button" :disabled="!formIsValid">Enviar</button>
     </form>
 
     <div>
       <h2>Datos no editables</h2>
-      <p>Nombre: {{ profile.client_name }}</p>
+      <p v-if="user">Nombre: {{ user.client_name }}</p>
     </div>
   </div>
 </template>
@@ -38,56 +34,85 @@ export default {
   name: 'EditarPerfil',
   data() {
     return {
+      user: null,
       profile: {
-        client_id: '',
         client_email: '',
         client_password: '',
         client_nickname: '',
         client_img: '',
-        client_name: ''
-      }
-    }
+      },
+    };
+  },
+  computed: {
+    formIsValid() {
+      return (
+        this.profile.client_password &&
+        this.profile.client_nickname &&
+        this.profile.client_img &&
+        this.user
+      );
+    },
   },
   methods: {
-    onFileChange(e) {
-      const file = e.target.files[0];
-      this.profile.client_img = URL.createObjectURL(file);
-    },
     async submitForm() {
-      const formData = new FormData();
-      formData.append('client_email', this.profile.client_email);
-      formData.append('client_password', this.profile.client_password);
-      formData.append('client_nickname', this.profile.client_nickname);
-      formData.append('client_img', this.profile.client_img);
+      const data = {
+        client_id: this.user.client_id,
+        client_password: this.profile.client_password,
+        client_nickname: this.profile.client_nickname,
+        client_img: this.profile.client_img,
+      };
+      console.log(data)
 
       try {
-        const response = await fetch(`/clients/edit/${this.profile.client_id}`, {
+        const response = await fetch("http://localhost:3001/api/clients/edit", {
           method: 'PUT',
-          body: formData
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
         });
-        const data = await response.json();
-        console.log(data);
+        const responseData = await response.json();
+        console.log(responseData);
       } catch (error) {
         console.error(error);
       }
-    }
+    },
+    onFileChange(event) {
+      const file = event.target.files[0];
+      if (file) {
+        this.profile.client_img = file;
+      }
+    },
   },
   async created() {
-    try {
-      const response = await fetch('/clients/profile', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
+    const token = localStorage.getItem('token');
+    if (token) {
+      try {
+        const response = await fetch('http://localhost:3001/api/clients/profile', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+        if (response.ok) {
+          const data = await response.json();
+          this.user = data.body;
+        } else {
+          console.error('Error fetching user data');
         }
-      });
-      const data = await response.json();
-      this.profile = data.body;
-    } catch (error) {
-      console.error('Error fetching client:', error);
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    } else {
+      console.log("No hay token");
+      router.push("/");
     }
-  }
-}
+  },
+};
 </script>
+
+
+
 
 <style scoped>
 .editar-perfil {
