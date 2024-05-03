@@ -21,18 +21,39 @@
         </div>
         <button v-if="clubs.length > visibleClubsCount" @click="showMoreClubs">Ver más</button>
     </div>
+    <div>
+        <h2>Companies</h2>
+        <div class="row">
+          <div class="col-4" v-for="company in visibleCompanies" :key="company.id">
+            <h3>{{ company.company_name }}</h3>
+            <p>NIF: {{ company.company_nif }}</p>
+            <p>Email: {{ company.company_email }}</p>
+            <p>Información: {{ company.company_info }}</p>
+            <!-- Botón de toggle para el estado de la compañía -->
+            <button @click="toggleCompanyState(company.company_nif, company.company_status)">
+              {{ company.company_status ? 'Desactivar' : 'Activar' }}
+            </button>
+          </div>
+        </div>
+        <button v-if="companies.length > visibleCompaniesCount" @click="showMoreCompanies">Ver más</button>
+      </div>
+
+
 </template>
 
 <script>
 export default {
     data() {
-        return {
-            clients: [],
-            clubs: [],
-            visibleClientsCount: 6,
-            visibleClubsCount: 6,
-        };
-    },
+    return {
+        clients: [],
+        clubs: [],
+        companies: [], // Asegúrate de tener esta línea
+        visibleClientsCount: 6,
+        visibleClubsCount: 6,
+        visibleCompaniesCount: 6,
+    };
+},
+
     computed: {
         visibleClients() {
             return this.clients.slice(0, this.visibleClientsCount);
@@ -40,13 +61,36 @@ export default {
         visibleClubs() {
             return this.clubs.slice(0, this.visibleClubsCount);
         },
+        visibleCompanies() {
+    if (Array.isArray(this.companies)) {
+        return this.companies.slice(0, this.visibleCompaniesCount);
+    } else {
+        return [];
+    }
+},
+
     },
     async created() {
         await this.fetchClients();
         await this.fetchClubs();
-        console.log(this.clubs)
+        await this.fetchCompanies();
     },
     methods: {
+        async fetchCompanies() {
+            try {
+                console.log("glñasplasld")
+                const response = await fetch('http://localhost:3001/api/companies/');
+                const data = await response.json();
+                this.companies = data.body;
+                console.log(this.companies)
+            } catch (error) {
+                console.error('Error fetching companies:', error);
+            }
+        },
+        showMoreCompanies() {
+            this.visibleCompaniesCount = this.companies.length;
+        },
+
         async fetchClients() {
             try {
                 const response = await fetch('http://localhost:3001/api/clients/all');
@@ -70,6 +114,7 @@ export default {
         },
         async toggleClientState(client) {
             try {
+                
                 const response = await fetch('http://localhost:3001/api/clients/toggle-state', {
                     method: 'PUT',
                     headers: {
@@ -109,6 +154,33 @@ export default {
         showMoreClubs() {
             this.visibleClubsCount = this.clubs.length;
         },
+        async toggleCompanyState(company_nif, currentStatus) {
+            console.log(company_nif)
+      try {
+        const response = await fetch('http://localhost:3001/api/companies/toggle-state', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ company_nif: company_nif }),
+        });
+
+        if (response.ok) {
+          // Cambiar el estado localmente
+          const updatedCompanies = this.companies.map(company => {
+            if (company.company_nif === company_nif) {
+              company.company_status = !currentStatus;
+            }
+            return company;
+          });
+          this.companies = updatedCompanies;
+        } else {
+          console.error('Error toggling company state:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Error toggling company state:', error);
+      }
+    },
     },
 };
 </script>
@@ -124,4 +196,17 @@ export default {
     flex: 0 0 33.333333%;
     max-width: 33.333333%;
 }
+.company-container {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .company-card {
+    background-color: #3d3a3a;
+    color: #ffffff;
+    padding: 20px;
+    border-radius: 5px;
+    margin: 10px;
+    width: calc(33.33% - 20px); /* Ajustar según el diseño deseado */
+  }
 </style>

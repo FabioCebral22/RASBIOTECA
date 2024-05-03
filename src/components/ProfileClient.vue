@@ -17,7 +17,6 @@
             <section class="activities">
                 <h1 class="rose">Actividades Recientes</h1>
                 <div class="entries">
-                    <EventCard />
                 </div>
             </section>
 
