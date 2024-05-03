@@ -11,6 +11,8 @@ import CreateEvent from '@/views/CreateEvent.vue'
 import ClubsView from '@/views/ClubsView.vue'
 import ClubDetailsView from '@/views/ClubDetailsView.vue'
 import EventsView from '@/views/EventsView.vue'
+import EventDetailsView from '@/views/EventDetailsView.vue'
+import CheckoutView from '@/views/CheckoutView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -81,8 +83,18 @@ const router = createRouter({
       path: '/events',
       name: 'EventsView',
       component: EventsView
-    }
-    
+    },
+    {
+      path: '/events/:eventId',
+      name: 'EventDetails',
+      component: EventDetailsView
+    },
+    {
+      path: '/checkout/:eventId/:quantity/:ticketType',
+      name: 'checkout',
+      component: CheckoutView,
+      props: true, // Permite pasar los parámetros como props al componente
+    },
   ]
 })
 

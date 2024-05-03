@@ -13,7 +13,7 @@
     </div>
     <div class="content">
       <div class="clubs-list" v-if="clubs && clubs.length > 0">
-        <h2>Clubs que te pertenecen</h2> 
+        <h2 class="next">Clubs que te pertenecen</h2> 
         <ClubCard v-for="club in clubs" :key="club.club_id" :club="club" />
       </div>
       <div v-else>
@@ -138,7 +138,9 @@ export default {
   flex-direction: column;
   padding: 0 1rem;
 }
-
+.next{
+  text-align: center;
+}
 .header {
   position: relative;
 }
