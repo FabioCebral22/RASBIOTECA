@@ -20,7 +20,7 @@
         <p>No se encontraron clubes para esta compañía.</p>
       </div>
     </div>
-    <a href="/CreateClub" class="btn-create"><>AÑADIR</a>
+    <a href="/CreateClub" class="btn-create"><>AÑADIR NUEVO CLUB</a>
 
   </div>
 </template>
