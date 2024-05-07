@@ -19,22 +19,31 @@
                 <h2>Normas del club:</h2>
                 <p>{{ clubDetails.club_rules }}</p>
             </div>
-            <!-- Puedes agregar más detalles aquí -->
         </div>
+        <div class="club-events">
+      <h2 class="next">Eventos próximos</h2>
+      <div class="event-list">
+        <EventCard v-for="event in clubEvents" :key="event.event_id" :event="event" />
+      </div>
+    </div>        
     </div>
 </template>
 
 <script>
+import EventCard from '@/components/EventCard.vue';
+
 export default {
-    name: 'ClubDetailsView',
-    data() {
-        return {
-            clubDetails: null,
-        };
-    },
-    created() {
-        this.fetchClubDetails();
-    },
+  name: 'ClubDetailsView',
+  data() {
+    return {
+      clubDetails: null,
+      clubEvents: null,
+    };
+  },
+  created() {
+    this.fetchClubDetails();
+    this.fetchClubEvents();
+  },
     methods: {
         async fetchClubDetails() {
             const club_id = this.$route.params.clubId; // Obtener el ID del club de la ruta
@@ -57,11 +66,30 @@ export default {
                 console.error('Error:', error);
             }
         },
-    },
+        async fetchClubEvents() {
+      const club_id = this.$route.params.clubId;
+      try {
+        const response = await fetch(`http://localhost:3001/api/clubEvents/${club_id}`);
+        if (response.ok) {
+          const data = await response.json();
+          this.clubEvents = data.body;
+          console.log('Eventos del club:', this.clubEvents);
+        } else {
+          console.error('Error al obtener los eventos del club');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+  },
+  components: {
+    EventCard,
+  },
 };
 </script>
 
 <style scoped>
+
 .club-details-container {
     width: 100%;
     max-width: 100%; 
@@ -75,7 +103,12 @@ export default {
     background-color: #1a1a1d;
     color: #FFFFFF;
 }
+.next{
+    text-align: center;
 
+  color: #E3E3E3;
+
+}
 .club-header-img {
     width: 100%;
     height: 15rem;
@@ -127,4 +160,5 @@ export default {
 .club-rules p {
     font-size: 1rem;
 }
+
 </style>

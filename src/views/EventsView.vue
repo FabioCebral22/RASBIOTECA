@@ -93,7 +93,9 @@ export default {
   .info h2 {
       margin-top: 0.25rem;
   }
-  
+  h2{
+    text-align: center;
+  }
   .email {
       font-size: 0.8rem;
   }

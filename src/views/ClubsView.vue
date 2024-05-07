@@ -57,7 +57,9 @@ export default {
     flex-direction: column;
     padding: 0 1rem;
 }
-
+h2{
+    text-align: center;
+}
 .header {
     position: relative;
 }
