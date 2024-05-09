@@ -56,7 +56,7 @@ const router = createRouter({
     //   path: '/admin/register',
     //   name: 'adminRegister',
     //   component: RegisterAdmin
-    // }
+    // },
     {
       path: '/adminView',
       name: 'adminView',
@@ -90,11 +90,12 @@ const router = createRouter({
       component: EventDetailsView
     },
     {
-      path: '/checkout/:eventId/:quantity/:ticketType',
+      path: '/checkout/:ticketName/:ticketQuantity/:ticketPrice',
       name: 'checkout',
       component: CheckoutView,
-      props: true, // Permite pasar los parámetros como props al componente
+      props: true, 
     },
+    
   ]
 })
 

@@ -39,9 +39,34 @@ export default {
         console.error('Error:', error);
       }
     },
+    async fetchUserData() {
+            const token = localStorage.getItem('token');
+            if (token) {
+                try {
+                    const response = await fetch('http://localhost:3001/api/clients/profile', {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+                    if (response.ok) {
+                        const data = await response.json();
+                        this.user = data.body;
+                    } else {
+                        console.error('Error fetching user data');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+            } else {
+                console.log("No hay token");
+                this.$router.push("/")            }
+        }
   },
   created() {
     this.findAllEvents();
+  this.fetchUserData();
+
   }
 }
 </script>

@@ -11,6 +11,20 @@
           <label for="event_date">Fecha del Evento:</label>
           <input type="datetime-local" id="event_date" v-model="form.event_date" required>
 
+          <!-- Desplegable para añadir tickets -->
+          <div v-for="(ticket, index) in form.tickets" :key="index">
+              <label for="ticket_name">Nombre del Ticket:</label>
+              <input v-model="ticket.ticket_name" required>
+
+              <label for="ticket_price">Precio del Ticket:</label>
+              <input type="number" v-model="ticket.ticket_price" required>
+
+              <label for="ticket_quantity">Cantidad del Ticket:</label>
+              <input type="number" v-model="ticket.ticket_quantity" required>
+          </div>
+
+          <button type="button" @click="addTicket">Añadir Ticket</button>
+
           <button type="submit">Crear Evento</button>
       </form>
   </div>
@@ -29,13 +43,16 @@ export default {
           form: {
               event_name: '',
               event_description: '',
-              event_date: ''
+              event_date: '',
+              tickets: [] // Array para almacenar los tickets
           }
       };
   },
   methods: {
       async submitForm() {
           try {
+            console.log("Tickets creados:", this.form.tickets);
+
               const response = await fetch('http://localhost:3001/api/events', {
                   method: 'POST',
                   headers: {
@@ -45,7 +62,8 @@ export default {
                       event_name: this.form.event_name,
                       event_description: this.form.event_description,
                       event_date: this.form.event_date,
-                      club_id: this.clubId
+                      club_id: this.clubId,
+                      tickets: this.form.tickets // Enviar todos los tickets al servidor
                   })
               });
 
@@ -56,10 +74,18 @@ export default {
               const data = await response.json();
               console.log(data);
 
-              this.$router.push('/profile');
+              // this.$router.push('/profile');
           } catch (error) {
               console.error(error);
           }
+      },
+      addTicket() {
+          // Añadir un nuevo objeto de ticket al array de tickets
+          this.form.tickets.push({
+              ticket_name: '',
+              ticket_price: 0,
+              ticket_quantity: 0
+          });
       }
   },
   created(){
@@ -67,6 +93,7 @@ export default {
   }
 };
 </script>
+
 
   
   
