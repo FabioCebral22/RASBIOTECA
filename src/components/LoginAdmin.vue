@@ -44,7 +44,7 @@ export default {
                     const data = await response.json();
 
                     if (data.ok) {
-                        this.$router.push('/admin/dashboard');
+                        this.$router.push('/adminView');
                     } else {
                         alert('Invalid name or password');
                     }

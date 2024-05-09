@@ -14,6 +14,20 @@
           <label for="event_image">Imagen del Evento:</label>
           <input type="file" id="event_image" ref="fileInput" @change="onFileChange">
 
+          <!-- Desplegable para añadir tickets -->
+          <div v-for="(ticket, index) in form.tickets" :key="index">
+              <label for="ticket_name">Nombre del Ticket:</label>
+              <input v-model="ticket.ticket_name" required>
+
+              <label for="ticket_price">Precio del Ticket:</label>
+              <input type="number" v-model="ticket.ticket_price" required>
+
+              <label for="ticket_quantity">Cantidad del Ticket:</label>
+              <input type="number" v-model="ticket.ticket_quantity" required>
+          </div>
+
+          <button type="button" @click="addTicket">Añadir Ticket</button>
+
           <button type="submit">Crear Evento</button>
       </form>
   </div>
@@ -33,7 +47,8 @@ export default {
               event_name: '',
               event_description: '',
               event_date: '',
-              event_image: null
+              event_image: null,
+              tickets: [] // Array para almacenar los tickets
           }
       };
   },
@@ -47,9 +62,20 @@ export default {
               formData.append('event_image', this.form.event_image);
               formData.append('club_id', this.clubId);
 
+            console.log("Tickets creados:", this.form.tickets);
+
               const response = await fetch('http://localhost:3001/api/events', {
                   method: 'POST',
-                  body: formData
+                  headers: {
+                      'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({
+                      event_name: this.form.event_name,
+                      event_description: this.form.event_description,
+                      event_date: this.form.event_date,
+                      club_id: this.clubId,
+                      tickets: this.form.tickets // Enviar todos los tickets al servidor
+                  })
               });
 
               if (!response.ok) {
@@ -59,13 +85,21 @@ export default {
               const data = await response.json();
               console.log(data);
 
-              this.$router.push('/profile');
+              // this.$router.push('/profile');
           } catch (error) {
               console.error(error);
           }
       },
       onFileChange(event) {
           this.form.event_image = event.target.files[0];
+      },
+      addTicket() {
+          // Añadir un nuevo objeto de ticket al array de tickets
+          this.form.tickets.push({
+              ticket_name: '',
+              ticket_price: 0,
+              ticket_quantity: 0
+          });
       }
   },
   created(){
