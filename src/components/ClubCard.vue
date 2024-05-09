@@ -18,10 +18,10 @@
                 <h3>Normas del club:</h3>
                 <p>{{ club.club_rules }}</p>
             </div>
-            <button v-if="isOwner" class="btn-delete" @click="deleteClub(club.club_id)">Eliminar Club</button>
-            <router-link v-if="isOwner" :to="{ name: 'CreateEvent', params: { clubId: club.club_id } }" class="btn-add">
-  Añadir Evento
-</router-link>
+            <button v-if="isOwner" class="btn-action btn-delete" @click="deleteClub(club.club_id)">Eliminar Club</button>
+            <button v-if="isOwner" @click="editClub" class="btn-action btn-edit">Editar Club</button>
+            <router-link v-if="isOwner" :to="{ name: 'CreateEvent', params: { clubId: club.club_id } }" class="btn-action btn-add">Añadir Evento</router-link>
+
 
         </div>
     </div>
@@ -66,6 +66,9 @@ export default {
                 throw error;
             }
         },
+        editClub() {
+        this.$router.push({ name: 'EditClub', params: { clubId: this.club.club_id } });
+    },
         checkIsCompany(token) {
             try {
                 if (token) {
@@ -120,49 +123,45 @@ export default {
     }
 
 };
-</script>
-
-<style scoped>
-.btn-delete {
-    background-color: #ff4136;
-    /* Color de fondo rojo */
+</script><style scoped>
+.btn-action {
     color: white;
-    /* Color del texto blanco */
-    padding: 0.5rem 1rem;
-    /* Espaciado interno */
+    padding: 0.3rem 1rem; /* Reducir el tamaño del relleno */
     border: none;
-    /* Sin borde */
     border-radius: 5px;
     cursor: pointer;
-    /* Cursor al pasar por encima */
     transition: background-color 0.3s ease;
-    /* Transición suave del color de fondo */
+    font-size: 0.9rem; /* Reducir el tamaño de fuente */
+}
+
+.btn-delete {
+    background-color: #ff4136; /* Rojo */
 }
 
 .btn-delete:hover {
-    background-color: #d60000;
-    /* Cambio de color al pasar por encima */
+    background-color: #d60000; /* Rojo más oscuro al pasar el mouse */
 }
 
 .btn-add {
-    background-color: #36c6ff;
-    /* Color de fondo rojo */
-    color: white;
-    /* Color del texto blanco */
-    padding: 0.5rem 1rem;
-    /* Espaciado interno */
-    border: none;
-    /* Sin borde */
+    display: inline-block;
+    background-color: #36c6ff; /* Azul */
+    text-decoration: none; /* Quitar subrayado */
+    padding: 0.3rem 1rem; /* Reducir el tamaño del relleno */
     border-radius: 5px;
-    cursor: pointer;
-    /* Cursor al pasar por encima */
     transition: background-color 0.3s ease;
-    /* Transición suave del color de fondo */
+    font-size: 0.9rem; /* Reducir el tamaño de fuente */
 }
 
 .btn-add:hover {
-    background-color: #1b4edb;
-    /* Cambio de color al pasar por encima */
+    background-color: #1b4edb; /* Azul más oscuro al pasar el mouse */
+}
+
+.btn-edit {
+    background-color: #2ecc71; /* Verde */
+}
+
+.btn-edit:hover {
+    background-color: #24a04a; /* Verde más oscuro al pasar el mouse */
 }
 
 .club-link {
@@ -175,7 +174,7 @@ export default {
     color: #FFFFFF;
     border-radius: 10px;
     overflow: hidden; /* Evitar que el enlace afecte al tamaño */
-    margin: 20px
+    margin: 20px;
 }
 
 .club-image {

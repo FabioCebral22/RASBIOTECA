@@ -19,8 +19,7 @@
 
           <button type="submit" class="login-btn">Sign in</button>
           <div class="links">
-            <a href="#">Forgot password?</a>
-            <a href="#">Do not have an account?</a>
+            <a href="/register">Crea tu cuenta de empresa para Rasbioteca</a>
           </div>
         </form>
       </div>
@@ -84,6 +83,10 @@ body {
   background: #222431;
   padding: 0;
   margin: 0;
+}
+
+input:-webkit-autofill {
+  -webkit-text-fill-color: #E3E3E3 !important;
 }
 
 /* Snow */
@@ -271,12 +274,10 @@ a:hover,
 a:active {
   text-decoration: none;
 }
-
 a {
   color: #ff008c;
-  font-size: 0.88rem;
-  font-weight: 600;
-  letter-spacing: -1px;
+  font-size: 1rem;
+  font-weight: 700;
   transition: all 0.4s ease;
 }
 

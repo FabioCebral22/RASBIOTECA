@@ -13,7 +13,6 @@
   </div>
   <div class="upcoming">
     <h2>Próximamente</h2>
-
   </div>
 </template>
 

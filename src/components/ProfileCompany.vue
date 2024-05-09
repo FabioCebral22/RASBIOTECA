@@ -3,11 +3,12 @@
     <div class="header">
       <img src="/public/img/discoteca.jpg" class="header-img">
       <div class="company-info" v-if="company">
-        <img src="/public/img/discoteca.jpg" alt="Imagen de perfil" class="profile-image">
+        <img :src='"http://localhost:3001" + company.company_img' alt="Imagen de perfil" class="profile-image">
         <div class="info">
           <h1>{{ company.company_name }}</h1>
           <h2>({{ company.company_email }})</h2>
           <p class="email">{{ company.company_info }}</p>
+          <router-link :to="{ name: 'EditCompany', params: { company_nif: company.company_nif }}" class="btn-edit">Editar perfil</router-link>
         </div>
       </div>
     </div>
@@ -79,6 +80,7 @@ export default {
           if (response.ok) {
             const data = await response.json();
             this.company = data.body;
+            console.log('+++++++++++++++'+this.company.company_nif)
           } else {
             console.error('Error al obtener los datos de la compañía');
           }

@@ -1,7 +1,7 @@
 <template>
     <div class="event-card">
         <div class="event-image">
-            <img src="/public/img/discoteca.jpg" :alt="event.event_name">
+            <img :src='"http://localhost:3001" + event.event_image' :alt="event.event_name">
         </div>
         <div class="event-details">
             <h1 class="event-name">{{ event.event_name }}</h1>
@@ -50,6 +50,7 @@ export default {
             const ticketType = this.ticketType
             console.log(`Comprando ${quantity} ticket(s) ${ticketType} para el evento ${eventId}`);
             console.log(this.event)
+
             
         },
 

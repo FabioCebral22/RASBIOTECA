@@ -13,6 +13,8 @@ import ClubDetailsView from '@/views/ClubDetailsView.vue'
 import EventsView from '@/views/EventsView.vue'
 import EventDetailsView from '@/views/EventDetailsView.vue'
 import CheckoutView from '@/views/CheckoutView.vue'
+import EditClub from '@/views/EditClub.vue'
+import EditCompanyProfile from '@/views/EditCompanyProfile.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -93,8 +95,15 @@ const router = createRouter({
       path: '/checkout/:eventId/:quantity/:ticketType',
       name: 'checkout',
       component: CheckoutView,
-      props: true, // Permite pasar los parámetros como props al componente
+      props: true,
     },
+    {
+      path: '/profile/edit/:company_nif',
+      name: 'EditCompany',
+      component: EditCompanyProfile
+    },
+    
+
   ]
 })
 
