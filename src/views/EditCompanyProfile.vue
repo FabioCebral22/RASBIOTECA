@@ -102,7 +102,7 @@ export default {
 <style scoped>
 
 h1{
-    color: White;
+    color: e3e3e3;
 }
  
 .editar-compania {
