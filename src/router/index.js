@@ -15,6 +15,7 @@ import EventDetailsView from '@/views/EventDetailsView.vue'
 import CheckoutView from '@/views/CheckoutView.vue'
 import EditClub from '@/views/EditClub.vue'
 import EditCompanyProfile from '@/views/EditCompanyProfile.vue'
+import EditClientProfile from '@/views/EditClientProfile.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -102,6 +103,18 @@ const router = createRouter({
       name: 'EditCompany',
       component: EditCompanyProfile
     },
+    {
+      path: '/clubs/edit/:clubId',
+      name: 'EditClub',
+      component: EditClub,
+      props: true
+  },
+  {
+    path: '/profile/edit/client/:client_id',
+    name: 'EditClient',
+    component: EditClientProfile
+  },
+
     
 
   ]

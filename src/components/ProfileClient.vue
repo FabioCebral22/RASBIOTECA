@@ -3,12 +3,13 @@
         <div class="header">
             <img src="/img/discoteca.jpg" class="header-img">
             <div class="user-info" v-if="user">
-                <!-- <img :src="user.profile_image" alt="Profile image" class="profile-image"> -->
-                <img src="/img/discoteca.jpg" alt="Profile image" class="profile-image">
+                <img :src='"http://localhost:3001" + user.client_img' alt="Profile image" class="profile-image">
                 <div class="info">
                     <h1>{{ user.client_name }}</h1>
                     <h2>({{ user.client_nickname }})</h2>
                     <p class="email">{{ user.client_email }}</p>
+                    <router-link :to="{ name: 'EditClient', params: { client_id: user.client_id }}" class="btn-edit">Editar perfil</router-link>
+
                 </div>
             </div>
         </div>
@@ -94,7 +95,19 @@ export default {
     height: 15rem;
     object-fit: cover;
 }
+.btn-edit {
+    color: #FFFFFF;
+    background-color: #FF008C;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
 
+.btn-edit:hover {
+    background-color: #D60078;
+}
 .user-info {
     position: absolute;
     bottom: 0;
