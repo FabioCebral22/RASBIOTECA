@@ -126,46 +126,62 @@ export default {
 </script><style scoped>
 .btn-action {
     color: white;
-    padding: 0.3rem 1rem; /* Reducir el tamaño del relleno */
+    padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    font-size: 0.9rem; /* Reducir el tamaño de fuente */
+    font-size: 1rem; 
 }
 
 .btn-delete {
-    background-color: #ff4136; /* Rojo */
+    background-color: #BD0068;
 }
 
 .btn-delete:hover {
-    background-color: #d60000; /* Rojo más oscuro al pasar el mouse */
+    background-color: #9C004D;
+}
+
+.btn-add {
+    background-color: #007BFF;
+}
+
+.btn-add:hover {
+    background-color: #0056b3;
+}
+
+.btn-edit {
+    background-color: #28a745;
+}
+
+.btn-edit:hover {
+    background-color: #218838;
 }
 
 .btn-add {
     display: inline-block;
-    background-color: #36c6ff; /* Azul */
-    text-decoration: none; /* Quitar subrayado */
-    padding: 0.3rem 1rem; /* Reducir el tamaño del relleno */
+    background-color: #36c6ff; 
+    text-decoration: none; 
+    padding: 0.3rem 1rem; 
     border-radius: 5px;
     transition: background-color 0.3s ease;
-    font-size: 0.9rem; /* Reducir el tamaño de fuente */
+    font-size: 0.9rem;
 }
 
 .btn-add:hover {
-    background-color: #1b4edb; /* Azul más oscuro al pasar el mouse */
+    background-color: #1b4edb; 
 }
 
 .btn-edit {
-    background-color: #2ecc71; /* Verde */
+    background-color: #2ecc71; 
 }
 
 .btn-edit:hover {
-    background-color: #24a04a; /* Verde más oscuro al pasar el mouse */
+    background-color: #24a04a;
 }
 
 .club-link {
-    text-decoration: none; /* Quitar el subrayado del enlace */
+    text-decoration: none; 
 }
 
 .club-card {
@@ -173,7 +189,7 @@ export default {
     background-color: #1a1a1d;
     color: #FFFFFF;
     border-radius: 10px;
-    overflow: hidden; /* Evitar que el enlace afecte al tamaño */
+    overflow: hidden; 
     margin: 20px;
 }
 
