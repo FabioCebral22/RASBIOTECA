@@ -8,20 +8,23 @@
           <h1>{{ company.company_name }}</h1>
           <h2>({{ company.company_email }})</h2>
           <p class="email">{{ company.company_info }}</p>
-          <router-link :to="{ name: 'EditCompany', params: { company_nif: company.company_nif }}" class="btn-edit">Editar perfil</router-link>
+          <router-link :to="{ name: 'EditCompany', params: { company_nif: company.company_nif } }"
+            class="btn-edit">Editar perfil</router-link>
         </div>
       </div>
     </div>
     <div class="content">
       <div class="clubs-list" v-if="clubs && clubs.length > 0">
-        <h2 class="next">Clubs que te pertenecen</h2> 
+        <h2 class="next">Clubs que te pertenecen</h2>
         <ClubCard v-for="club in clubs" :key="club.club_id" :club="club" />
       </div>
       <div v-else>
         <p>No se encontraron clubes para esta compañía.</p>
       </div>
     </div>
-    <a href="/CreateClub" class="btn-create"><>AÑADIR NUEVO CLUB</a>
+    <a href="/CreateClub" class="btn-create">
+      <>AÑADIR NUEVO CLUB
+    </a>
 
   </div>
 </template>
@@ -80,7 +83,7 @@ export default {
           if (response.ok) {
             const data = await response.json();
             this.company = data.body;
-            console.log('+++++++++++++++'+this.company.company_nif)
+            console.log('+++++++++++++++' + this.company.company_nif)
           } else {
             console.error('Error al obtener los datos de la compañía');
           }
@@ -115,24 +118,54 @@ export default {
 </script>
 
 <style scoped>
+.btn-edit {
+  display: inline-block;
+  background-color: #BD0068;
+  color: rgb(219, 219, 219);
+  padding: 2px;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  margin-top: 1rem;
+}
+
+.btn-edit:hover {
+  background-color: #960153;
+}
+
+.btn-edit:active {
+  background-color: #910050;
+}
+
 .btn-create {
   display: inline-block;
-  background-color: #4CAF50; /* Color de fondo verde */
-  color: white; /* Color del texto blanco */
-  padding: 10px 20px; /* Espaciado interno */
-  text-align: center; /* Alineación del texto */
-  text-decoration: none; /* Sin subrayado */
-  border-radius: 5px; /* Borde redondeado */
-  transition: background-color 0.3s ease; /* Transición suave del color de fondo */
+  background-color: #4CAF50;
+  /* Color de fondo verde */
+  color: white;
+  /* Color del texto blanco */
+  padding: 10px 20px;
+  /* Espaciado interno */
+  text-align: center;
+  /* Alineación del texto */
+  text-decoration: none;
+  /* Sin subrayado */
+  border-radius: 5px;
+  /* Borde redondeado */
+  transition: background-color 0.3s ease;
+  /* Transición suave del color de fondo */
 }
 
 .btn-create:hover {
-  background-color: #45a049; /* Cambio de color al pasar por encima */
+  background-color: #45a049;
+  /* Cambio de color al pasar por encima */
 }
 
 .btn-create:active {
-  background-color: #3e8e41; /* Cambio de color al hacer clic */
+  background-color: #3e8e41;
+  /* Cambio de color al hacer clic */
 }
+
 /* Estilos para PC y tablet */
 .body {
   color: #E3E3E3;
@@ -140,9 +173,11 @@ export default {
   flex-direction: column;
   padding: 0 1rem;
 }
-.next{
+
+.next {
   text-align: center;
 }
+
 .header {
   position: relative;
 }
