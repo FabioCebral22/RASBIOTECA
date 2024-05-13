@@ -1,21 +1,21 @@
 <template>
   <div class="mainscreen">
-    <!-- <img src="https://image.freepik.com/free-vector/purple-background-with-neon-frame_52683-34124.jpg"  class="bgimg " alt="">--> 
     <div class="card">
       <div class="leftside">
         <img src="../../public/img/rasbioteca-big-white.png" class="product" alt="Shoes" />
       </div>
       <div class="rightside">
-        <form action="">
+        <form @submit.prevent="handleSubmit">
           <h1>CheckOut</h1>
           <h2>Payment Information</h2>
-          <p>Ticket: {{ $route.params.ticketName }}</p> <!-- Nuevo campo de entrada para mostrar el nombre del ticket -->
+          <p>Ticket: {{ $route.params.ticketName }}</p>
+          <p>Ticket ID: {{ ticketId }}</p>
           <p>Cardholder Name</p>
-          <input type="text" class="inputbox" name="name" required />
+          <input type="text" class="inputbox" v-model="cardHolderName" required />
           <p>Card Number</p>
-          <input type="number" class="inputbox" name="card_number" id="card_number" required />
+          <input type="number" class="inputbox" v-model="cardNumber" required />
           <p>Card Type</p>
-          <select class="inputbox" name="card_type" id="card_type" required>
+          <select class="inputbox" v-model="cardType" required>
             <option value="">--Select a Card Type--</option>
             <option value="Visa">Visa</option>
             <option value="RuPay">RuPay</option>
@@ -23,11 +23,11 @@
           </select>
           <div class="expcvv">
             <p class="expcvv_text">Expiry</p>
-            <input type="date" class="inputbox" name="exp_date" id="exp_date" required />
+            <input type="date" class="inputbox" v-model="expiryDate" required />
             <p class="expcvv_text2">CVV</p>
-            <input type="password" class="inputbox" name="cvv" id="cvv" required />
+            <input type="password" class="inputbox" v-model="cvv" required />
           </div>
-          <p>Total Price: {{ $route.params.ticketQuantity * $route.params.ticketPrice }}€</p> <!-- Nuevo campo de entrada para mostrar el precio total -->
+          <p>Total Price: {{ totalPrice }}€</p>
           <button type="submit" class="button">CheckOut</button>
         </form>
       </div>
@@ -37,8 +37,69 @@
 
 <script>
 export default {
+  data() {
+    return {
+      ticketId: null,
+      totalPrice: 0,
+      cardHolderName: '',
+      cardNumber: '',
+      cardType: '',
+      expiryDate: '',
+      cvv: ''
+    };
+  },
+  methods: {
+    async loadTicketId() {
+      try {
+        const response = await fetch('http://localhost:3001/api/ticketsid', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ ticketName: this.$route.params.ticketName }), 
+        });
+        const data = await response.json();
+        this.ticketId = data.ticketId; 
+      } catch (error) {
+        console.error('Error al obtener el ticket ID:', error);
+      }
+    },
+    async handleSubmit() {
+      try {
+        const token = localStorage.getItem("token");
+        const tokenParts = token.split('.');
+
+const payload = JSON.parse(atob(tokenParts[1]));
+console.log(payload.clientData.client_email)
+        const response = await fetch('http://localhost:3001/api/add-sell', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            client_email: payload.clientData.client_email, // Obtiene el email del cliente desde el localStorage
+            sell_total_price: this.totalPrice,
+            ticket_id: this.ticketId,
+            qr_guests: this.$route.params.ticketQuantity,
+            cardHolderName: this.cardHolderName,
+            cardNumber: this.cardNumber,
+            cardType: this.cardType,
+            expiryDate: this.expiryDate,
+            cvv: this.cvv
+          }), 
+        });
+        const data = await response.json();
+        console.log(data); 
+        this.$router.push('/profile');
+      } catch (error) {
+        console.error('Error al realizar el checkout:', error);
+      }
+
+    }
+  },
   created() {
-    console.log(this.$route.params); // Verifica si los parámetros están disponibles
+    this.loadTicketId();
+    this.totalPrice = this.$route.params.ticketQuantity * this.$route.params.ticketPrice;
   }
 }
 </script>

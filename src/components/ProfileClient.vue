@@ -1,80 +1,136 @@
 <template>
     <div class="body">
-        <div class="header">
-            <img src="/img/discoteca.jpg" class="header-img">
-            <div class="user-info" v-if="user">
-                <!-- <img :src="user.profile_image" alt="Profile image" class="profile-image"> -->
-                <img src="/img/discoteca.jpg" alt="Profile image" class="profile-image">
-                <div class="info">
-                    <h1>{{ user.client_name }}</h1>
-                    <h2>({{ user.client_nickname }})</h2>
-                    <p class="email">{{ user.client_email }}</p>
+      <div class="header">
+        <img src="/img/discoteca.jpg" class="header-img">
+        <div class="user-info" v-if="user">
+          <img src="/img/discoteca.jpg" alt="Profile image" class="profile-image">
+          <div class="info">
+            <h1>{{ user.client_name }}</h1>
+            <h2>({{ user.client_nickname }})</h2>
+            <p class="email">{{ user.client_email }}</p>
+          </div>
+        </div>
+      </div>
+  
+      <div class="activities-reviews">
+        <section class="activities">
+            <h1 class="rose">Actividades Recientes</h1>
+            <div class="entries">
+              <div v-for="sell in sells" :key="sell._id" class="activity-entry card">
+                <div class="card-content">
+                  <p class="date">Fecha de la actividad:   {{ sell.sell_date }}</p>
+                  <p class="price">Precio total de la compra:   {{ sell.sell_total_price }}€</p>
+                  <p class="ticket">Ticket: {{ sell.ticket_name }}</p>
+                  <p class="event">Evento: {{ sell.event.event_name }}</p>
                 </div>
+              </div>
             </div>
-        </div>
-
-        <div class="activities-reviews">
-            <section class="activities">
-                <h1 class="rose">Actividades Recientes</h1>
-                <div class="entries">
-                </div>
-            </section>
-
-            <section class="reviews">
-                <h1 class="rose">Reviews</h1>
-            </section>
-        </div>
+          </section>
+  
+        <section class="reviews">
+          <h1 class="rose">Reviews</h1>
+        </section>
+      </div>
     </div>
-</template>
-
-
-<script>
-import EventCard from '@/components/EventCard.vue';
-import router from '@/router';
-
-export default {
+  </template>
+  
+  <script>
+  import router from '@/router';
+  
+  export default {
     name: 'ProfileClient',
-    components: {
-        EventCard,
-    },
     data() {
-        return {
-            user: null,
-        };
+      return {
+        user: null,
+        sells: [], // Array para almacenar las ventas del usuario
+      };
     },
-
     methods: {
-        async fetchUserData() {
-            const token = localStorage.getItem('token');
-            if (token) {
-                try {
-                    const response = await fetch('http://localhost:3001/api/clients/profile', {
-                        method: 'GET',
-                        headers: {
-                            'Authorization': `Bearer ${token}`
-                        }
-                    });
-                    if (response.ok) {
-                        const data = await response.json();
-                        this.user = data.body;
-                    } else {
-                        console.error('Error fetching user data');
-                    }
-                } catch (error) {
-                    console.error('Error:', error);
-                }
+      async fetchSells() {
+        const token = localStorage.getItem('token');
+        if (token) {
+          try {
+            const response = await fetch('http://localhost:3001/api/sells-by-email', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+              },
+              body: JSON.stringify({ client_email: this.user.client_email }) // Envía el email del usuario al servidor
+            });
+            if (response.ok) {
+              const sells = await response.json();
+              // Llama a la función para obtener la información adicional de cada venta
+              await this.fetchSellDetails(sells);
             } else {
-                console.log("No hay token");
-                router.push("/");
+              console.error('Error fetching user sells');
             }
+          } catch (error) {
+            console.error('Error:', error);
+          }
+        } else {
+          console.log("No hay token");
+          router.push("/");
         }
+      },
+      async fetchSellDetails(sells) {
+        for (const sell of sells) {
+          try {
+            const response = await fetch('http://localhost:3001/api/sells-by-ticket', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ ticket_id: sell.ticket_id }) // Envía el ticket_id al servidor
+            });
+            if (response.ok) {
+              const data = await response.json();
+              console.log(data)
+              // Agrega la información adicional a la venta
+              sell.ticket_name = data.ticket_name;
+              sell.event = data.event;
+            } else {
+              console.error('Error fetching sell details');
+            }
+          } catch (error) {
+            console.error('Error:', error);
+          }
+        }
+        this.sells = sells;
+      },
+      async fetchUserData() {
+        const token = localStorage.getItem('token');
+        if (token) {
+          try {
+            const response = await fetch('http://localhost:3001/api/clients/profile', {
+              method: 'GET',
+              headers: {
+                'Authorization': `Bearer ${token}`
+              }
+            });
+            if (response.ok) {
+              const data = await response.json();
+              this.user = data.body;
+              await this.fetchSells(); 
+            } else {
+              console.error('Error fetching user data');
+            }
+          } catch (error) {
+            console.error('Error:', error);
+          }
+        } else {
+          console.log("No hay token");
+          router.push("/");
+        }
+      }
     },
     created() {
-        const token = localStorage.getItem('token');
-        this.fetchUserData();
+      this.fetchUserData();
     }
-}
-</script>
+  }
+  </script>
+  
+  
 
 <style scoped>
 /* Estilos para PC y tablet */
@@ -174,4 +230,34 @@ export default {
         margin-top: 1rem;
     }
 }
+.card {
+    border: 1px solid #363434;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 16px;
+    padding: 16px;
+    background-color: #131010; /* Fondo gris */
+    color: #fff; /* Fuente blanca */
+  }
+  
+  .card-content {
+    margin: 0;
+  }
+  
+  .date {
+    font-weight: bold;
+  }
+  
+  .price {
+    margin-top: 8px;
+  }
+  
+  .ticket {
+    margin-top: 8px;
+  }
+  
+  .event {
+    margin-top: 8px;
+  }
+  
 </style>
