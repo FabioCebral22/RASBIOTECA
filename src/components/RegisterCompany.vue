@@ -230,7 +230,7 @@ export default {
   
   /* Inputs and Labels */
   
-  input {
+  input, textarea {
     width: 100%;
     padding: 12px 20px;
     border: 2px solid #ccc;
@@ -244,14 +244,18 @@ export default {
     color: #E3E3E3;
   }
   
-  input:focus {
+  input:focus ,textarea:focus {
     border: 2px solid #BD0068;
   }
   
   input:-webkit-autofill,
   input:-webkit-autofill:hover,
   input:-webkit-autofill:focus,
-  input:-webkit-autofill:active {
+  input:-webkit-autofill:active,
+  textarea:-webkit-autofill,
+  textarea:-webkit-autofill:hover,
+  textarea:-webkit-autofill:focus,
+  textarea:-webkit-autofill:active {
     -webkit-background-clip: text;
     -webkit-text-fill-color: #000;
     transition: background-color 5000s ease-in-out 0s;

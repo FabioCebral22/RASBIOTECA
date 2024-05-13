@@ -100,6 +100,11 @@ export default {
 </script>
 
 <style scoped>
+
+h1{
+    color: e3e3e3;
+}
+ 
 .editar-compania {
     color: #000000;
     display: flex;

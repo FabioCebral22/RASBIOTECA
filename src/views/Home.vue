@@ -1,14 +1,11 @@
 <template>
   <div class="home">
     <div class="content">
-      <h1>
-        ¡Bienvenido a RASBIOTECA, el futuro de la vida nocturna comienza aquí!</h1>
+      <h1>¡Bienvenido a RASBIOTECA, el futuro de la vida nocturna comienza aquí!</h1>
       <button>Entradas</button>
-     <RouterLink to="/"> 
-      <button v-on:click="handleLogout">LogOut</button>
-
-     </RouterLink> 
-
+      <router-link to="/">
+        <button v-on:click="handleLogout">LogOut</button>
+      </router-link>
     </div>
   </div>
   <div class="upcoming">
@@ -17,43 +14,94 @@
 </template>
 
 <script>
-
 export default {
   name: 'HomeView',
+  data() {
+    return {
+      user: null,
+      company: null
+    };
+  },
   methods: {
     handleLogout() {
       localStorage.clear();
-      console.log("Sesión Cerrada")
-    }
-    ,
+      console.log("Sesión Cerrada");
+      this.$router.push("/");
+    },
     async fetchUserData() {
-            const token = localStorage.getItem('token');
-            if (token) {
-                try {
-                    const response = await fetch('http://localhost:3001/api/clients/profile', {
-                        method: 'GET',
-                        headers: {
-                            'Authorization': `Bearer ${token}`
-                        }
-                    });
-                    if (response.ok) {
-                        const data = await response.json();
-                        this.user = data.body;
-                    } else {
-                        console.error('Error fetching user data');
-                    }
-                } catch (error) {
-                    console.error('Error:', error);
-                }
-            } else {
-                console.log("No hay token");
-                this.$router.push("/")            }
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch('http://localhost:3001/api/clients/profile', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        if (response.ok) {
+          const data = await response.json();
+          this.user = data.body;
+        } else {
+          console.error('Error fetching user data');
+          this.handleTokenError();
         }
-  },
-    created() {
+      } catch (error) {
+        console.error('Error:', error);
+        this.handleTokenError();
+      }
+    },
+    async fetchCompanyData() {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch('http://localhost:3001/api/company/profile', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        if (response.ok) {
+          const data = await response.json();
+          this.company = data.body;
+        } else {
+          console.error('Error fetching company data');
+          this.handleTokenError();
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        this.handleTokenError();
+      }
+    },
+    checkToken() {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        console.log("No hay token");
+        this.handleTokenError();
+        return;
+      }
+      if (this.checkIsCompany(token)) {
+        this.fetchCompanyData();
+      } else {
         this.fetchUserData();
+      }
+    },
+    checkIsCompany(token) {
+      try {
+        const tokenParts = token.split('.');
+        const payload = JSON.parse(atob(tokenParts[1]));
+        return payload.companyData && payload.companyData.isCompany === true;
+      } catch (error) {
+        console.error('Error decoding token:', error);
+        return false;
+      }
+    },
+    handleTokenError() {
+      localStorage.removeItem('token');
+      this.$router.push("/");
     }
-}
+  },
+  created() {
+    this.checkToken();
+  }
+};
 </script>
 
 
@@ -131,6 +179,4 @@ button:hover {
     font-size: 2rem;
   }
 }
-
-
 </style>

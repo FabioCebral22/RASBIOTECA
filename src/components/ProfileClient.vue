@@ -150,7 +150,19 @@
     height: 15rem;
     object-fit: cover;
 }
+.btn-edit {
+    color: #FFFFFF;
+    background-color: #FF008C;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
 
+.btn-edit:hover {
+    background-color: #D60078;
+}
 .user-info {
     position: absolute;
     bottom: 0;
