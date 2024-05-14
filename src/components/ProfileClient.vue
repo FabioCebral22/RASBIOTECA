@@ -18,7 +18,7 @@
         <div class="entries">
           <div v-for="sell in sells" :key="sell._id" class="activity-entry card">
             <div class="card-content">
-              <p class="date">Fecha de la actividad: {{ sell.sell_date }}</p>
+              <p class="date">Fecha de la actividad: {{ formatDate(sell.sell_date) }}</p>
               <p class="price">Precio total de la compra: {{ sell.sell_total_price }}€</p>
               <p class="ticket">Ticket: {{ sell.ticket_name }}</p>
               <p class="event">Evento: {{ sell.event.event_name }}</p>
@@ -42,7 +42,7 @@
         <div v-else>
           <div v-for="review in reviews" :key="review.review_id" class="review-entry card">
             <div class="card-content">
-              <p class="date">Fecha de la review: {{ review.createdAt }}</p>
+              <p class="date">Fecha de la review: {{ formatDate(review.createdAt) }}</p>
               <p class="review-data">{{ review.review_data }}</p>
               <div class="star-rating">
                 <span v-for="star in 5" :key="star" class="star" :class="{ filled: star <= review.review_value }">
@@ -68,10 +68,15 @@ export default {
     return {
       user: null,
       sells: [],
-      reviews: [], // Añadir estado para las reviews
+      reviews: [], 
     };
   },
   methods: {
+    formatDate(dateString) {
+      const date = new Date(dateString);
+      const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+      return date.toLocaleDateString(undefined, options);
+    },
     async fetchSells() {
       const token = localStorage.getItem('token');
       if (token) {
@@ -82,7 +87,7 @@ export default {
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${token}`
             },
-            body: JSON.stringify({ client_email: this.user.client_email }) // Envía el email del usuario al servidor
+            body: JSON.stringify({ client_email: this.user.client_email }) 
           });
           if (response.ok) {
             const sells = await response.json();

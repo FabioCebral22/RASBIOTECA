@@ -8,7 +8,7 @@
         <p class="event-description">{{ event.event_description }}</p>
         <div class="event-date-time">
           <h3>Fecha y Hora:</h3>
-          <p>{{ event.event_date }} - {{ event.event_time }}</p>
+          <p>{{ formatDate(event.event_date) }}</p>
         </div>
         <div class="ticket-type" v-if="!isCompany">
           <label for="ticketType" class="ticket-label">Tipo de entrada:</label>
@@ -107,6 +107,11 @@
           return false;
         }
       },
+      formatDate(dateString) {
+      const date = new Date(dateString);
+      const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+      return date.toLocaleDateString(undefined, options);
+    },
     }
   };
   </script>

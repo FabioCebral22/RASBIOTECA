@@ -35,7 +35,7 @@
       <div v-else>
         <div v-for="review in reviews" :key="review.review_id" class="review-entry card">
           <div class="card-content">
-            <p class="date">Fecha de la review: {{ review.createdAt }}</p>
+            <p class="date">Fecha de la review: {{ formatDate(review.createdAt) }}</p>
             <p class="review-data">{{ review.review_data }}</p>
             <div class="star-rating">
               <span v-for="star in 5" :key="star" class="star" :class="{ filled: star <= review.review_value }">
@@ -67,6 +67,11 @@ export default {
     this.fetchClubReviews();
   },
   methods: {
+    formatDate(dateString) {
+      const date = new Date(dateString);
+      const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+      return date.toLocaleDateString(undefined, options);
+    },
     async fetchClubDetails() {
       const club_id = this.$route.params.clubId;
       try {
