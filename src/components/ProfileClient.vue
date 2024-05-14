@@ -23,7 +23,6 @@
               <p class="ticket">Ticket: {{ sell.ticket_name }}</p>
               <p class="event">Evento: {{ sell.event.event_name }}</p>
               <img :src="sell.qr_code_image" alt="QR Code" class="qr-code">
-              <!-- Agregar botón para añadir review -->
               <router-link
                 :to="{ name: 'ReviewForm', params: { ticket_id: sell.ticket_id, client_id: user.client_id }}"
                 class="btn-add-review"
@@ -147,7 +146,6 @@ export default {
 </script>
 
 <style scoped>
-/* Estilos para el botón de añadir review */
 .btn-add-review {
   display: inline-block;
   margin-top: 10px;
