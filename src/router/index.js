@@ -16,6 +16,7 @@ import CheckoutView from '@/views/CheckoutView.vue'
 import EditClub from '@/views/EditClub.vue'
 import EditCompanyProfile from '@/views/EditCompanyProfile.vue'
 import EditClientProfile from '@/views/EditClientProfile.vue'
+import ReviewForm from '@/components/ReviewForm.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -114,6 +115,11 @@ const router = createRouter({
     name: 'EditClient',
     component: EditClientProfile
   },
+  {
+    path: '/review/form/:ticket_id/:client_id',
+    name: 'ReviewForm',
+    component: ReviewForm
+  }
 
     
 

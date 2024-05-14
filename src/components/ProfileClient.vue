@@ -1,134 +1,169 @@
 <template>
-    <div class="body">
-      <div class="header">
-        <img src="/img/discoteca.jpg" class="header-img">
-        <div class="user-info" v-if="user">
-          <img src="/img/discoteca.jpg" alt="Profile image" class="profile-image">
-          <div class="info">
-            <h1>{{ user.client_name }}</h1>
-            <h2>({{ user.client_nickname }})</h2>
-            <p class="email">{{ user.client_email }}</p>
-          </div>
+  <div class="body">
+    <div class="header">
+      <img src="/img/discoteca.jpg" class="header-img">
+      <div class="user-info" v-if="user">
+        <img src="/img/discoteca.jpg" alt="Profile image" class="profile-image">
+        <div class="info">
+          <h1>{{ user.client_name }}</h1>
+          <h2>({{ user.client_nickname }})</h2>
+          <p class="email">{{ user.client_email }}</p>
         </div>
       </div>
-  
-      <div class="activities-reviews">
-        <section class="activities">
-            <h1 class="rose">Actividades Recientes</h1>
-            <div class="entries">
-              <div v-for="sell in sells" :key="sell._id" class="activity-entry card">
-                <div class="card-content">
-                  <p class="date">Fecha de la actividad:   {{ sell.sell_date }}</p>
-                  <p class="price">Precio total de la compra:   {{ sell.sell_total_price }}€</p>
-                  <p class="ticket">Ticket: {{ sell.ticket_name }}</p>
-                  <p class="event">Evento: {{ sell.event.event_name }}</p>
-                </div>
-              </div>
-            </div>
-          </section>
-  
-        <section class="reviews">
-          <h1 class="rose">Reviews</h1>
-        </section>
-      </div>
     </div>
-  </template>
-  
-  <script>
-  import router from '@/router';
-  
-  export default {
-    name: 'ProfileClient',
-    data() {
-      return {
-        user: null,
-        sells: [], // Array para almacenar las ventas del usuario
-      };
-    },
-    methods: {
-      async fetchSells() {
-        const token = localStorage.getItem('token');
-        if (token) {
-          try {
-            const response = await fetch('http://localhost:3001/api/sells-by-email', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-              },
-              body: JSON.stringify({ client_email: this.user.client_email }) // Envía el email del usuario al servidor
-            });
-            if (response.ok) {
-              const sells = await response.json();
-              // Llama a la función para obtener la información adicional de cada venta
-              await this.fetchSellDetails(sells);
-            } else {
-              console.error('Error fetching user sells');
-            }
-          } catch (error) {
-            console.error('Error:', error);
+
+    <div class="activities-reviews">
+      <section class="activities">
+        <h1 class="rose">Actividades Recientes</h1>
+        <div class="entries">
+          <div v-for="sell in sells" :key="sell._id" class="activity-entry card">
+            <div class="card-content">
+              <p class="date">Fecha de la actividad: {{ sell.sell_date }}</p>
+              <p class="price">Precio total de la compra: {{ sell.sell_total_price }}€</p>
+              <p class="ticket">Ticket: {{ sell.ticket_name }}</p>
+              <p class="event">Evento: {{ sell.event.event_name }}</p>
+              <img :src="sell.qr_code_image" alt="QR Code" class="qr-code">
+              <!-- Agregar botón para añadir review -->
+              <router-link
+                :to="{ name: 'ReviewForm', params: { ticket_id: sell.ticket_id, client_id: user.client_id }}"
+                class="btn-add-review"
+              >
+                Añadir Review
+              </router-link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="reviews">
+        <h1 class="rose">Reviews</h1>
+      </section>
+    </div>
+  </div>
+</template>
+
+<script>
+import router from '@/router';
+import QRCode from 'qrcode';
+
+export default {
+  name: 'ProfileClient',
+  data() {
+    return {
+      user: null,
+      sells: [], 
+    };
+  },
+  methods: {
+    async fetchSells() {
+      const token = localStorage.getItem('token');
+      if (token) {
+        try {
+          const response = await fetch('http://localhost:3001/api/sells-by-email', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ client_email: this.user.client_email }) // Envía el email del usuario al servidor
+          });
+          if (response.ok) {
+            const sells = await response.json();
+            await this.fetchSellDetails(sells);
+          } else {
+            console.error('Error fetching user sells');
           }
-        } else {
-          console.log("No hay token");
-          router.push("/");
+        } catch (error) {
+          console.error('Error:', error);
         }
-      },
-      async fetchSellDetails(sells) {
-        for (const sell of sells) {
-          try {
-            const response = await fetch('http://localhost:3001/api/sells-by-ticket', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({ ticket_id: sell.ticket_id }) // Envía el ticket_id al servidor
-            });
-            if (response.ok) {
-              const data = await response.json();
-              console.log(data)
-              // Agrega la información adicional a la venta
-              sell.ticket_name = data.ticket_name;
-              sell.event = data.event;
-            } else {
-              console.error('Error fetching sell details');
-            }
-          } catch (error) {
-            console.error('Error:', error);
-          }
-        }
-        this.sells = sells;
-      },
-      async fetchUserData() {
-        const token = localStorage.getItem('token');
-        if (token) {
-          try {
-            const response = await fetch('http://localhost:3001/api/clients/profile', {
-              method: 'GET',
-              headers: {
-                'Authorization': `Bearer ${token}`
-              }
-            });
-            if (response.ok) {
-              const data = await response.json();
-              this.user = data.body;
-              await this.fetchSells(); 
-            } else {
-              console.error('Error fetching user data');
-            }
-          } catch (error) {
-            console.error('Error:', error);
-          }
-        } else {
-          console.log("No hay token");
-          router.push("/");
-        }
+      } else {
+        console.log("No hay token");
+        router.push("/");
       }
     },
-    created() {
-      this.fetchUserData();
+    async fetchSellDetails(sells) {
+      for (const sell of sells) {
+        try {
+          const response = await fetch('http://localhost:3001/api/sells-by-ticket', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ ticket_id: sell.ticket_id })
+          });
+          if (response.ok) {
+            const data = await response.json();
+            sell.ticket_name = data.ticket_name;
+            sell.event = data.event;
+            sell.qr_code_image = await this.generateQRCode(sell.qr_code);
+          } else {
+            console.error('Error fetching sell details');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      }
+      this.sells = sells;
+    },
+    async fetchUserData() {
+      const token = localStorage.getItem('token');
+      if (token) {
+        try {
+          const response = await fetch('http://localhost:3001/api/clients/profile', {
+            method: 'GET',
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          });
+          if (response.ok) {
+            const data = await response.json();
+            this.user = data.body;
+            await this.fetchSells(); 
+          } else {
+            console.error('Error fetching user data');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      } else {
+        console.log("No hay token");
+        router.push("/");
+      }
+    },
+    async generateQRCode(text) {
+      try {
+        const url = await QRCode.toDataURL(text);
+        return url;
+      } catch (err) {
+        console.error(err);
+        return null;
+      }
     }
+  },
+  created() {
+    this.fetchUserData();
   }
-  </script>
+}
+</script>
+
+<style scoped>
+/* Estilos para el botón de añadir review */
+.btn-add-review {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-add-review:hover {
+  background-color: #0056b3;
+}
+</style>
+
   
   
 
