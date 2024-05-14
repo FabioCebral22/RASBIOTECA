@@ -68,7 +68,6 @@
   formData.append('club_description', this.club.club_description);
   formData.append('club_schedule', this.club.club_schedule);
   
-  // Solo adjuntar la imagen si se ha seleccionado un nuevo archivo
   if (this.club.club_img) {
     formData.append('club_img', this.club.club_img);
   }

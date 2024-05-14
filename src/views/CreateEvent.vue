@@ -14,7 +14,6 @@
             <label for="event_image">Imagen del Evento:</label>
             <input type="file" id="event_image" name="event_image" ref="fileInput" @change="onFileChange">
 
-            <!-- Desplegable para añadir tickets -->
             <div v-for="(ticket, index) in form.tickets" :key="index">
                 <label for="ticket_name">Nombre del Ticket:</label>
                 <input v-model="ticket.ticket_name" required>
@@ -62,7 +61,6 @@ export default {
         formData.append('event_image', this.form.event_image);
         formData.append('club_id', this.clubId);
         
-        // Agregar los tickets al formData
         this.form.tickets.forEach((ticket, index) => {
             formData.append(`tickets[${index}]`, JSON.stringify(ticket));
         });
@@ -77,7 +75,6 @@ export default {
         }
 
         const data = await response.json();
-        console.log(data);
 
         this.$router.push('/profile');
     } catch (error) {
@@ -89,7 +86,6 @@ export default {
             this.form.event_image = event.target.files[0];
         },
         addTicket() {
-            // Añadir un nuevo objeto de ticket al array de tickets
             this.form.tickets.push({
                 ticket_name: '',
                 ticket_price: 0,
@@ -98,7 +94,6 @@ export default {
         }
     },
     created() {
-        console.log(this.clubId);
     }
 };
 </script>

@@ -1,5 +1,14 @@
 <template>
-  <div class="body">
+  <div>
+    <button @click="openCamera">Abrir cámara</button>
+    <video ref="video" autoplay></video>
+    <canvas ref="canvas" style="display: none;"></canvas>
+    <div v-if="qrResult !== null">
+      <p>QR Detectado: {{ qrResult }}</p>
+      <button @click="checkQRCode">Comprobar código</button>
+      <p v-if="loading">Comprobando código...</p>
+      <p v-if="result !== null">Resultado: {{ result }}</p>
+    </div>
     <div class="header">
       <img src="/public/img/discoteca.jpg" class="header-img">
       <div class="company-info" v-if="company">
@@ -31,6 +40,7 @@
 <script>
 import router from '@/router';
 import ClubCard from '@/components/ClubCard.vue';
+import Quagga from 'quagga';
 
 export default {
   name: 'ProfileCompany',
@@ -41,6 +51,9 @@ export default {
     return {
       company: null,
       clubs: null,
+      qrResult: null,
+      loading: false,
+      result: null,
     };
   },
   methods: {
@@ -57,7 +70,6 @@ export default {
           if (response.ok) {
             const data = await response.json();
             this.clubs = data.body;
-            console.log(this.clubs)
           } else {
             console.error('Error al obtener los clubes propiedad de la compañía');
           }
@@ -65,7 +77,6 @@ export default {
           console.error('Error:', error);
         }
       } else {
-        console.log("No hay token");
         router.push("/");
       }
     },
@@ -82,7 +93,6 @@ export default {
           if (response.ok) {
             const data = await response.json();
             this.company = data.body;
-            console.log('+++++++++++++++' + this.company.company_nif)
           } else {
             console.error('Error al obtener los datos de la compañía');
           }
@@ -90,7 +100,6 @@ export default {
           console.error('Error:', error);
         }
       } else {
-        console.log("No hay token");
         router.push("/");
       }
     },
@@ -103,18 +112,77 @@ export default {
         console.error('Error al decodificar el token:', error);
         return false;
       }
+    },
+    openCamera() {
+      Quagga.init({
+        inputStream: {
+          name: "Live",
+          type: "LiveStream",
+          target: this.$refs.video,
+        },
+        decoder: {
+          readers: ["code_128_reader", "ean_reader", "ean_8_reader", "code_39_reader", "code_39_vin_reader", "codabar_reader", "upc_reader", "upc_e_reader", "i2of5_reader", "2of5_reader", "code_93_reader"],
+        },
+      }, function(err) {
+        if (err) {
+          console.error(err);
+          return;
+        }
+        Quagga.start();
+      });
+
+      Quagga.onDetected((result) => {
+        if (!this.qrResult) {
+          this.qrResult = result.codeResult.code;
+          Quagga.stop();
+        }
+      });
+    },
+    checkQRCode() {
+  this.loading = true;
+  const tokenParts = token.split('.');
+  const payload = JSON.parse(atob(tokenParts[1]));
+  const requestBody = {
+    qr_code: this.qrResult, 
+    company_email: payload.companyData.company_email,
+  };
+
+  fetch('/checkqr', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(requestBody)
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Error al verificar el código QR');
     }
+    return response.json();
+  })
+  .then(data => {
+    this.result = 'El código existe en la base de datos.';
+  })
+  .catch(error => {
+    console.error('Error al verificar el código QR:', error);
+    this.result = 'El código no existe en la base de datos.';
+  })
+  .finally(() => {
+    this.loading = false; 
+  });
+},
+
   },
   created() {
     const token = localStorage.getItem('token');
     if (this.checkIsCompany(token)) {
-      console.log('El token contiene la propiedad isCompany en true.');
       this.fetchCompanyData();
       this.fetchOwnedClubs();
     }
   },
 };
 </script>
+
 
 <style scoped>
 @media only screen and (max-width: 600px) {
@@ -256,4 +324,5 @@ export default {
   flex-wrap: wrap;
   justify-content: center;
 }
+
 </style>

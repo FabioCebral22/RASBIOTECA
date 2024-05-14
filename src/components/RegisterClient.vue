@@ -80,7 +80,6 @@ export default {
         });
 
         if (response.ok) {
-          console.log('Registro exitoso');
           router.push("/")
         } else {
           console.error('Error al registrar');
@@ -260,7 +259,6 @@ label {
   font-size: 0.9rem;
 }
 
-/* Login Button */
 
 .login-btn {
   width: 100%;
@@ -281,7 +279,6 @@ label {
   color: #ffffff;
 }
 
-/* Links */
 
 .links {
   display: flex;
@@ -310,7 +307,6 @@ a:active {
     height: 3rem;
     width: 15rem;
 }
-/* Centro del logo */
 .logo-container {
     display: flex;
     justify-content: center;

@@ -51,7 +51,6 @@ export default {
             try {
                 const tokenParts = token.split('.');
                 const payLoad = JSON.parse(atob(tokenParts[1]));
-                console.log(payLoad.company_email);
                 const response = await fetch('http://localhost:3001/api/company/nif', {
                     method: 'POST',
                     headers: {
@@ -80,7 +79,6 @@ export default {
         async submitForm() {
             const formData = new FormData();
             Object.keys(this.form).forEach(key => formData.append(key, this.form[key]));
-            console.log(formData);
             try {
                 const response = await fetch('http://localhost:3001/api/clubs', {
                     method: 'POST',
@@ -93,7 +91,6 @@ export default {
                 }
 
                 const data = await response.json();
-                console.log(data);
 
                 this.$router.push('/profile');
             } catch (error) {

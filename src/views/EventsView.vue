@@ -59,7 +59,6 @@ export default {
                     console.error('Error:', error);
                 }
             } else {
-                console.log("No hay token");
                 this.$router.push("/")            }
         }
   },

@@ -1,40 +1,45 @@
 <template>
     <div class="event-card">
       <div class="event-image">
-        <img :src="'http://localhost:3001' + event.event_image" :alt="event.event_name">
+        <img :src='"http://localhost:3001" + event.event_image' :alt="event.event_name">
       </div>
       <div class="event-details">
         <h1 class="event-name">{{ event.event_name }}</h1>
         <p class="event-description">{{ event.event_description }}</p>
         <div class="event-date-time">
           <h3>Fecha y Hora:</h3>
-          <p>{{ event.event_date }} - {{ event.event_time }}</p>
+          <p>{{ formatDate(event.event_date) }}</p>
         </div>
-        <div class="ticket-actions">
-          <div class="ticket-type">
-            <label for="ticketType" class="ticket-label">Tipo de entrada:</label>
-            <select v-model="ticketType" id="ticketType" class="ticket-select">
-              <option v-if="tickets.length === 0" value="no-tickets">No hay tickets disponibles</option>
-              <option v-else v-for="ticket in tickets" :value="ticket.ticket_type" :key="ticket.ticket_type">
-                {{ ticket.ticket_name }} - {{ ticket.ticket_price }}€
-              </option>
-            </select>
-          </div>
-          <div class="ticket-quantity">
-            <input type="number" v-model="ticketQuantity" min="1" class="ticket-quantity-input">
-            <button v-on:click="buyTickets" class="btn-action btn-buy">Comprar</button>
-          </div>
+        <div class="ticket-action">
+
+        <div class="ticket-type" v-if="!isCompany">
+          <label for="ticketType" class="ticket-label">Tipo de entrada:</label>
+          <select v-model="ticketType" id="ticketType" class="ticket-select">
+            <option v-if="tickets.length === 0" value="no-tickets">No hay tickets disponibles</option>
+            <option v-else v-for="ticket in tickets" :value="ticket.ticket_type" :key="ticket.ticket_type">
+              {{ ticket.ticket_name }} - {{ ticket.ticket_price }}€
+            </option>
+          </select>
         </div>
-        <button v-if="isOwner" class="btn-action btn-delete" @click="deleteEvent(event.event_id)">Eliminar Evento</button>
+        <div class="ticket-actions" v-if="!isCompany">
+          <input type="number" v-model="ticketQuantity" min="1">
+          <button v-on:click="buyTickets">Comprar</button>
+        </div>
+      </div>
+      <button v-if="isOwner" class="btn-action btn-delete" @click="deleteEvent(event.event_id)">Eliminar Evento</button>
         <button v-if="isOwner" @click="editEvent(event.event_id)" class="btn-action btn-edit">Editar Evento</button>
       </div>
     </div>
-  </template>
-  
-  <script>
-  export default {
+    </template>
+    
+    <script>
+    export default {
     name: 'EventCard',
     props: {
+      event: {
+        type: Object,
+        required: true,
+      },
       event: {
         type: Object,
         required: true,
@@ -45,12 +50,17 @@
         ticketQuantity: 1,
         ticketType: null,
         tickets: [],
+        isCompany: false,
         isOwner: false,
       };
     },
     mounted() {
       this.loadTickets();
       this.checkEventOwner();
+      const token = localStorage.getItem('token');
+      if (this.checkIsCompany(token)) {
+        this.isCompany = true;
+      }
     },
     methods: {
       async loadTickets() {
@@ -92,7 +102,27 @@
           console.error('Error al comprar los tickets:', error);
         }
       },
-      async deleteEvent(eventId) {
+      checkIsCompany(token) {
+        try {
+          if (token) {
+            const tokenParts = token.split('.');
+            const payload = JSON.parse(atob(tokenParts[1]));
+            return payload.companyData && payload.companyData.isCompany === true;
+          } else {
+            return false;
+          }
+        } catch (error) {
+          console.error('Error decoding the token:', error);
+          return false;
+        }
+      },
+      formatDate(dateString) {
+      const date = new Date(dateString);
+      const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+      return date.toLocaleDateString(undefined, options);
+    },
+
+    async deleteEvent(eventId) {
         try {
           const response = await fetch('http://localhost:3001/api/event/delete', {
             method: 'PUT',
@@ -132,11 +162,13 @@
           console.error('Error al verificar el propietario del evento:', error);
         }
       }
-    },
+    }
   };
   </script>
   
-  <style scoped>
+
+
+<style scoped>
 .event-card {
   display: flex;
   background-color: #1a1a1d;
@@ -183,11 +215,57 @@
   font-size: 0.9rem; /* Reducción del tamaño del texto de fecha y hora */
 }
 
-.ticket-actions {
-  display: flex;
-  flex-direction: column; /* Cambio a columna para móviles */
-  align-items: flex-start; /* Alineación a la izquierda */
-  margin-top: 1rem; /* Añadido margen superior */
+.ticket-action {
+    display: flex;
+    align-items: center;
+}
+
+.ticket-action input[type="number"] {
+    width: 60px;
+    margin-right: 10px;
+}
+
+.ticket-action button {
+    background-color: #FF008C;
+    color: #ffffff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Estilos para tablet */
+@media screen and (max-width: 1023px) {
+    .event-card {
+        margin: 10px;
+    }
+
+    .event-details {
+        padding: 0.5rem;
+    }
+
+    .event-date-time h3 {
+        font-size: 1rem;
+    }
+}
+
+/* Estilos para móvil */
+@media screen and (max-width: 479px) {
+    .event-name {
+        font-size: 1.5rem;
+    }
+
+    .event-description {
+        font-size: 0.9rem;
+    }
+
+    .event-date-time h3 {
+        font-size: 1rem;
+    }
+
+    .event-date-time p {
+        font-size: 0.8rem;
+    }
 }
 
 .ticket-type {

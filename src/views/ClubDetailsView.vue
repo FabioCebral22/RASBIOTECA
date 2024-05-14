@@ -29,6 +29,25 @@
     <div v-else>
       <p class="no-events-message">En estos momentos no hay eventos en las próximas fechas en este club</p>
     </div>
+    <div class="club-reviews">
+      <h2 class="rose">Reviews del Club</h2>
+      <div v-if="reviews.length === 0">
+        <p>No se han encontrado reviews para este club.</p>
+      </div>
+      <div v-else>
+        <div v-for="review in reviews" :key="review.review_id" class="review-entry card">
+          <div class="card-content">
+            <p class="date">Fecha de la review: {{ formatDate(review.createdAt) }}</p>
+            <p class="review-data">{{ review.review_data }}</p>
+            <div class="star-rating">
+              <span v-for="star in 5" :key="star" class="star" :class="{ filled: star <= review.review_value }">
+                ★
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -41,13 +60,20 @@ export default {
     return {
       clubDetails: null,
       clubEvents: null,
+      reviews: [],
     };
   },
   created() {
     this.fetchClubDetails();
     this.fetchClubEvents();
+    this.fetchClubReviews();
   },
   methods: {
+    formatDate(dateString) {
+      const date = new Date(dateString);
+      const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+      return date.toLocaleDateString(undefined, options);
+    },
     async fetchClubDetails() {
       const club_id = this.$route.params.clubId;
       try {
@@ -61,7 +87,6 @@ export default {
         if (response.ok) {
           const data = await response.json();
           this.clubDetails = data.body;
-          console.log('Detalles del club:', this.clubDetails);
         } else {
           console.error('Error al obtener los detalles del club');
         }
@@ -76,22 +101,57 @@ export default {
         if (response.ok) {
           const data = await response.json();
           this.clubEvents = data.body;
-          console.log('Eventos del club:', this.clubEvents);
         } else {
           console.error('Error al obtener los eventos del club');
         }
       } catch (error) {
         console.error('Error:', error);
       }
-    }
+    },
+    async fetchClubReviews() {
+      const club_id = this.$route.params.clubId;
+      try {
+        const response = await fetch('http://localhost:3001/api/club-reviews', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ club_id: club_id }),
+        });
+        if (response.ok) {
+          const data = await response.json();
+          this.reviews = data.reviews;
+        } else {
+          console.error('Error al obtener las reviews del club');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    },
   },
   components: {
     EventCard,
   },
 };
 </script>
-
 <style scoped>
+.rose {
+  text-align: center;
+  color: #E3E3E3;
+}
+.star-rating {
+  display: flex;
+  color: #ffc107;
+}
+
+.star {
+  font-size: 1.5rem;
+  margin-right: 0.1rem;
+}
+
+.star.filled {
+  color: #ffc107;
+}
 .no-events-message {
   text-align: center;
   color: #E3E3E3;
@@ -171,4 +231,16 @@ export default {
 .club-rules p {
   font-size: 1rem;
 }
+.club-reviews{
+}
+.card-content {
+  padding: 1.2rem;
+  margin: 0.4rem;
+  color: #E3E3E3;
+}
+.review-entry {
+  margin-bottom: 1rem;
+  background-color: #1a1a1d;
+}
+
 </style>

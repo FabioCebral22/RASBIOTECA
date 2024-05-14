@@ -12,6 +12,7 @@
     "jsonwebtoken": "^9.0.2",
     "jwt-decode": "^4.0.0",
     "qrcode": "^1.5.3",
+    "quagga": "^0.12.1",
     "vue": "^3.4.21",
     "vue-router": "^4.3.0"
   },

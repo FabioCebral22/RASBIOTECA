@@ -28,7 +28,6 @@ export default {
   methods: {
     handleLogout() {
       localStorage.clear();
-      console.log("Sesión Cerrada");
       this.$router.push("/");
     },
     async fetchUserData() {
@@ -76,7 +75,6 @@ export default {
     checkToken() {
       const token = localStorage.getItem('token');
       if (!token) {
-        console.log("No hay token");
         this.handleTokenError();
         return;
       }

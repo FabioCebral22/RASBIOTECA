@@ -64,7 +64,7 @@
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(clubDataToSend) // Convierte los datos del club a JSON
+    body: JSON.stringify(clubDataToSend) 
   };
 
   fetch('/api/clubs', requestOptions)
@@ -73,9 +73,6 @@
         throw new Error('Network response was not ok');
       }
       return response.json();
-    })
-    .then(data => {
-      console.log('Club data sent successfully:', data);
     })
     .catch(error => {
       console.error('There was a problem with the request:', error);
@@ -87,9 +84,8 @@
   </script>
   
   <style scoped>
-  /* Estilos para el modal */
   .modal {
-    display: none; /* Oculta el modal de forma predeterminada */
+    display: none; 
     position: fixed;
     z-index: 1;
     left: 0;
@@ -133,7 +129,6 @@
     background-color: #45a049;
   }
   
-  /* Estilos adicionales para el modal según sea necesario */
   .close-btn {
     background-color: #f44336;
   }
