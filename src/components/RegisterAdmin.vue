@@ -19,7 +19,7 @@
     methods: {
       async register() {
         try {
-          const response = await fetch('http://localhost:3001/api/admin/register', {
+          const response = await fetch('http://raul-argemi-7e6.alwaysdata.net/api/admin/register', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'

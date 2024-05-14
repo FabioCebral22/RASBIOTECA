@@ -21,7 +21,7 @@ export default {
         async login() {
             if (this.name === 'admin' && this.password === 'admin') {
                 try {
-                    const response = await fetch('http://localhost:3001/api/admin/login', {
+                    const response = await fetch('http://raul-argemi-7e6.alwaysdata.net/api/admin/login', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'

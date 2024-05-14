@@ -28,7 +28,7 @@ export default {
   methods: {
     async findAllEvents() {
       try {
-        const response = await fetch('http://localhost:3001/api/findEvents');
+        const response = await fetch('http://raul-argemi-7e6.alwaysdata.net/api/findEvents');
         if (response.ok) {
           const data = await response.json();
           this.events = data.body;
@@ -43,7 +43,7 @@ export default {
             const token = localStorage.getItem('token');
             if (token) {
                 try {
-                    const response = await fetch('http://localhost:3001/api/clients/profile', {
+                    const response = await fetch('http://raul-argemi-7e6.alwaysdata.net/api/clients/profile', {
                         method: 'GET',
                         headers: {
                             'Authorization': `Bearer ${token}`

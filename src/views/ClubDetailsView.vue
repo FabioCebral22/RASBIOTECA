@@ -3,7 +3,7 @@
     <div class="club-header">
       <img src="/public/img/discoteca.jpg" class="club-header-img">
       <div class="club-header-info" v-if="clubDetails">
-        <img :src='"http://localhost:3001" + clubDetails.club_img' alt="Imagen del club" class="club-profile-image">
+        <img :src='"http://raul-argemi-7e6.alwaysdata.net" + clubDetails.club_img' alt="Imagen del club" class="club-profile-image">
         <div class="club-header-details">
           <h1>{{ clubDetails.club_name }}</h1>
           <p>{{ clubDetails.club_schedule }}</p>
@@ -77,7 +77,7 @@ export default {
     async fetchClubDetails() {
       const club_id = this.$route.params.clubId;
       try {
-        const response = await fetch('http://localhost:3001/api/clubDetails', {
+        const response = await fetch('http://raul-argemi-7e6.alwaysdata.net/api/clubDetails', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -97,7 +97,7 @@ export default {
     async fetchClubEvents() {
       const club_id = this.$route.params.clubId;
       try {
-        const response = await fetch(`http://localhost:3001/api/clubEvents/${club_id}`);
+        const response = await fetch(`http://raul-argemi-7e6.alwaysdata.net/api/clubEvents/${club_id}`);
         if (response.ok) {
           const data = await response.json();
           this.clubEvents = data.body;
@@ -111,7 +111,7 @@ export default {
     async fetchClubReviews() {
       const club_id = this.$route.params.clubId;
       try {
-        const response = await fetch('http://localhost:3001/api/club-reviews', {
+        const response = await fetch('http://raul-argemi-7e6.alwaysdata.net/api/club-reviews', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

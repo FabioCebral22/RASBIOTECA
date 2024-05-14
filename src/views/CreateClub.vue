@@ -51,7 +51,7 @@ export default {
             try {
                 const tokenParts = token.split('.');
                 const payLoad = JSON.parse(atob(tokenParts[1]));
-                const response = await fetch('http://localhost:3001/api/company/nif', {
+                const response = await fetch('http://raul-argemi-7e6.alwaysdata.net/api/company/nif', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -80,7 +80,7 @@ export default {
             const formData = new FormData();
             Object.keys(this.form).forEach(key => formData.append(key, this.form[key]));
             try {
-                const response = await fetch('http://localhost:3001/api/clubs', {
+                const response = await fetch('http://raul-argemi-7e6.alwaysdata.net/api/clubs', {
                     method: 'POST',
                     body: formData,
                     

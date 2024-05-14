@@ -65,7 +65,7 @@ export default {
             formData.append(`tickets[${index}]`, JSON.stringify(ticket));
         });
 
-        const response = await fetch('http://localhost:3001/api/events', {
+        const response = await fetch('http://raul-argemi-7e6.alwaysdata.net/api/events', {
             method: 'POST',
             body: formData
         });

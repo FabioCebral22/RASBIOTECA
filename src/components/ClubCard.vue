@@ -3,7 +3,7 @@
     <div class="club-card">
         <router-link :to="{ name: 'ClubDetails', params: { clubId: club.club_id } }" class="club-link">
             <div class="club-image">
-                <img :src='"http://localhost:3001" + club.club_img' :alt="club.club_name">
+                <img :src='"http://raul-argemi-7e6.alwaysdata.net" + club.club_img' :alt="club.club_name">
             </div>
         </router-link>
 
@@ -46,7 +46,7 @@ export default {
     methods: {
         async deleteClub(clubId) {
             try {
-                const response = await fetch('http://localhost:3001/api/club/delete', {
+                const response = await fetch('http://raul-argemi-7e6.alwaysdata.net/api/club/delete', {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json'
@@ -87,7 +87,7 @@ export default {
             try {
             const tokenParts = token.split('.');
             const payload = JSON.parse(atob(tokenParts[1]));
-            const response = await fetch('http://localhost:3001/api/check-club', {
+            const response = await fetch('http://raul-argemi-7e6.alwaysdata.net/api/check-club', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

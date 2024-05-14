@@ -74,7 +74,7 @@
   
   try {
     const clubId = this.$route.params.clubId;
-    const response = await fetch(`http://localhost:3001/api/clubs/edit/${clubId}`, {
+    const response = await fetch(`http://raul-argemi-7e6.alwaysdata.net/api/clubs/edit/${clubId}`, {
       method: 'PUT',
       body: formData,
     });
@@ -95,7 +95,7 @@
       async fetchClubDetails() {
         try {
           const clubId = this.$route.params.clubId;
-          const response = await fetch(`http://localhost:3001/api/clubDetails`, {
+          const response = await fetch(`http://raul-argemi-7e6.alwaysdata.net/api/clubDetails`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

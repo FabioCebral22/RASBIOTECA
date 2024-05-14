@@ -57,7 +57,7 @@ export default {
 
             try {
                 const companyId = this.$route.params.company_nif;
-                const response = await fetch(`http://localhost:3001/api/company/edit/${companyId}`, {
+                const response = await fetch(`http://raul-argemi-7e6.alwaysdata.net/api/company/edit/${companyId}`, {
                     method: 'PUT',
                     body: formData,
                 });
@@ -79,7 +79,7 @@ export default {
         async fetchCompanyDetails() {
             try {
                 const companyId = this.$route.params.companyId;
-                const response = await fetch(`http://localhost:3001/api/company/profile`, {
+                const response = await fetch(`http://raul-argemi-7e6.alwaysdata.net/api/company/profile`, {
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`,

@@ -74,7 +74,7 @@ export default {
 
       try {
         const eventId = this.$route.params.eventId;
-        const response = await fetch(`http://localhost:3001/api/events/edit/${eventId}`, {
+        const response = await fetch(`http://raul-argemi-7e6.alwaysdata.net/api/events/edit/${eventId}`, {
           method: 'PUT',
           body: formData,
         });
@@ -97,7 +97,7 @@ export default {
     async fetchEventDetails() {
   try {
     const eventId = this.$route.params.eventId;
-    const response = await fetch(`http://localhost:3001/api/eventDetails`, {
+    const response = await fetch(`http://raul-argemi-7e6.alwaysdata.net/api/eventDetails`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

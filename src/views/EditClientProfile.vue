@@ -78,7 +78,7 @@ export default {
             }
             try {
                 const clientId = this.$route.params.client_id;
-                const response = await fetch(`http://localhost:3001/api/clients/edit/${clientId}`, {
+                const response = await fetch(`http://raul-argemi-7e6.alwaysdata.net/api/clients/edit/${clientId}`, {
                     method: 'PUT',
                     body: formData,
                 });
@@ -100,7 +100,7 @@ export default {
         async fetchClientDetails() {
             try {
                 const clientId = this.$route.params.client_id;
-                const response = await fetch(`http://localhost:3001/api/clients/profile`, {
+                const response = await fetch(`http://raul-argemi-7e6.alwaysdata.net/api/clients/profile`, {
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`,

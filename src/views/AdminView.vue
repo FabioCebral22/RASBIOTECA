@@ -132,7 +132,7 @@ export default {
     methods: {
         async fetchClients() {
             try {
-                const response = await fetch('http://localhost:3001/api/clients/all');
+                const response = await fetch('http://raul-argemi-7e6.alwaysdata.net/api/clients/all');
                 const data = await response.json();
                 this.clients = data.map(client => ({
                     ...client,
@@ -144,7 +144,7 @@ export default {
         },
         async fetchCompanies() {
             try {
-                const response = await fetch('http://localhost:3001/api/companies/');
+                const response = await fetch('http://raul-argemi-7e6.alwaysdata.net/api/companies/');
                 const data = await response.json();
                 this.companies = data.body.map(company => ({
                     ...company,
@@ -156,7 +156,7 @@ export default {
         },
         async fetchClubs() {
             try {
-                const response = await fetch('http://localhost:3001/api/club/all');
+                const response = await fetch('http://raul-argemi-7e6.alwaysdata.net/api/club/all');
                 const data = await response.json();
                 this.clubs = data.map(club => ({
                     ...club,
@@ -168,7 +168,7 @@ export default {
         },
         async fetchEvents() {
             try {
-                const response = await fetch('http://localhost:3001/api/events/');
+                const response = await fetch('http://raul-argemi-7e6.alwaysdata.net/api/events/');
                 const data = await response.json();
                 this.events = data.map(event => ({
                     ...event,
@@ -180,7 +180,7 @@ export default {
         },
         async toggleClientState(client) {
             try {
-                const response = await fetch('http://localhost:3001/api/clients/toggle-state', {
+                const response = await fetch('http://raul-argemi-7e6.alwaysdata.net/api/clients/toggle-state', {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -199,7 +199,7 @@ export default {
         },
         async toggleCompanyState(company_nif, currentStatus) {
             try {
-                const response = await fetch('http://localhost:3001/api/companies/toggle-state', {
+                const response = await fetch('http://raul-argemi-7e6.alwaysdata.net/api/companies/toggle-state', {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -225,7 +225,7 @@ export default {
         },
         async toggleClubState(club) {
             try {
-                const response = await fetch('http://localhost:3001/api/clubs/toggle-state', {
+                const response = await fetch('http://raul-argemi-7e6.alwaysdata.net/api/clubs/toggle-state', {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -245,7 +245,7 @@ export default {
         },
         async toggleEventState(event) {
             try {
-                const response = await fetch('http://localhost:3001/api/event/toggle-state', {
+                const response = await fetch('http://raul-argemi-7e6.alwaysdata.net/api/event/toggle-state', {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -265,7 +265,7 @@ export default {
         },
         async showEvents(clubId) {
             try {
-                const response = await fetch(`http://localhost:3001/api/clubs/events`, {
+                const response = await fetch(`http://raul-argemi-7e6.alwaysdata.net/api/clubs/events`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

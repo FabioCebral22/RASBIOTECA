@@ -66,7 +66,7 @@ export default {
         return;
       }
       try {
-        const response = await fetch('http://localhost:3001/api/clients', {
+        const response = await fetch('http://raul-argemi-7e6.alwaysdata.net/api/clients', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'

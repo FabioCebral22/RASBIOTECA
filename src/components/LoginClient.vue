@@ -39,7 +39,7 @@ export default {
   methods: {
     async login() {
       try {
-        const response = await fetch('http://localhost:3001/api/clients/login', {
+        const response = await fetch('http://raul-argemi-7e6.alwaysdata.net/api/clients/login', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'

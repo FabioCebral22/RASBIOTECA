@@ -51,7 +51,7 @@ export default {
   methods: {
     async loadTicketId() {
       try {
-        const response = await fetch('http://localhost:3001/api/ticketsid', {
+        const response = await fetch('http://raul-argemi-7e6.alwaysdata.net/api/ticketsid', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -70,7 +70,7 @@ export default {
         const tokenParts = token.split('.');
 
 const payload = JSON.parse(atob(tokenParts[1]));
-        const response = await fetch('http://localhost:3001/api/add-sell', {
+        const response = await fetch('http://raul-argemi-7e6.alwaysdata.net/api/add-sell', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

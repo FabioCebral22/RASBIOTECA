@@ -33,7 +33,7 @@ export default {
     async fetchUserData() {
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch('http://localhost:3001/api/clients/profile', {
+        const response = await fetch('http://raul-argemi-7e6.alwaysdata.net/api/clients/profile', {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`
@@ -54,7 +54,7 @@ export default {
     async fetchCompanyData() {
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch('http://localhost:3001/api/company/profile', {
+        const response = await fetch('http://raul-argemi-7e6.alwaysdata.net/api/company/profile', {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`

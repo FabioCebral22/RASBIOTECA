@@ -29,7 +29,7 @@ export default {
     methods: {
         async findAllClubs() {
             try {
-                const response = await fetch('http://localhost:3001/api/findclubs');
+                const response = await fetch('http://raul-argemi-7e6.alwaysdata.net/api/findclubs');
                 if (response.ok) {
                     const data = await response.json();
                     this.clubs = data.body;
@@ -44,7 +44,7 @@ export default {
             const token = localStorage.getItem('token');
             if (token) {
                 try {
-                    const response = await fetch('http://localhost:3001/api/clients/profile', {
+                    const response = await fetch('http://raul-argemi-7e6.alwaysdata.net/api/clients/profile', {
                         method: 'GET',
                         headers: {
                             'Authorization': `Bearer ${token}`
