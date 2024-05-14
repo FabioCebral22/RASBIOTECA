@@ -40,7 +40,7 @@
     methods: {
       async submitReview() {
         try {
-          const response = await fetch('/api/reviews', {
+          const response = await fetch('http://localhost:3001/api/reviews', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'

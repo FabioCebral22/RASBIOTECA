@@ -22,7 +22,7 @@
               <p class="price">Precio total de la compra: {{ sell.sell_total_price }}€</p>
               <p class="ticket">Ticket: {{ sell.ticket_name }}</p>
               <p class="event">Evento: {{ sell.event.event_name }}</p>
-              <img :src="sell.qr_code_image" alt="QR Code" class="qr-code">
+              <img :src="sell.qr_code_image" alt="QR Code" class="qr-code"><br>
               <router-link
                 :to="{ name: 'ReviewForm', params: { ticket_id: sell.ticket_id, client_id: user.client_id }}"
                 class="btn-add-review"
@@ -36,10 +36,27 @@
 
       <section class="reviews">
         <h1 class="rose">Reviews</h1>
+        <div v-if="reviews.length === 0">
+          <p>No se han encontrado reviews para este usuario.</p>
+        </div>
+        <div v-else>
+          <div v-for="review in reviews" :key="review.review_id" class="review-entry card">
+            <div class="card-content">
+              <p class="date">Fecha de la review: {{ review.createdAt }}</p>
+              <p class="review-data">{{ review.review_data }}</p>
+              <div class="star-rating">
+                <span v-for="star in 5" :key="star" class="star" :class="{ filled: star <= review.review_value }">
+                  &#9733;
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
     </div>
   </div>
 </template>
+
 
 <script>
 import router from '@/router';
@@ -50,7 +67,8 @@ export default {
   data() {
     return {
       user: null,
-      sells: [], 
+      sells: [],
+      reviews: [], // Añadir estado para las reviews
     };
   },
   methods: {
@@ -117,9 +135,36 @@ export default {
           if (response.ok) {
             const data = await response.json();
             this.user = data.body;
-            await this.fetchSells(); 
+            await this.fetchSells();
+            await this.fetchReviews(); // Llama a fetchReviews después de obtener los datos del usuario
           } else {
             console.error('Error fetching user data');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      } else {
+        console.log("No hay token");
+        router.push("/");
+      }
+    },
+    async fetchReviews() {
+      const token = localStorage.getItem('token');
+      if (token) {
+        try {
+          const response = await fetch('http://localhost:3001/api/client-reviews', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ client_email: this.user.client_email }) // Envía el email del usuario al servidor
+          });
+          if (response.ok) {
+            const data = await response.json();
+            this.reviews = data.reviews; // Actualiza el estado de las reviews
+          } else {
+            console.error('Error fetching user reviews');
           }
         } catch (error) {
           console.error('Error:', error);
@@ -145,7 +190,16 @@ export default {
 }
 </script>
 
+
 <style scoped>
+.star {
+  font-size: 2rem;
+  color: #d3d3d3;
+  cursor: pointer;
+}
+.star.filled {
+  color: #ffc107;
+}
 .btn-add-review {
   display: inline-block;
   margin-top: 10px;
