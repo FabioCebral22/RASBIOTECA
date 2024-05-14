@@ -82,7 +82,6 @@ export default {
         });
 
         if (response.ok) {
-          console.log('Registro exitoso');
           router.push("/")
         } else {
           console.error('Error al registrar');

@@ -43,7 +43,6 @@ img {
     margin-right: 10px;
 }
 
-/* For tablets */
 @media (max-width: 1024px) {
     .footer {
         flex-direction: column;
@@ -59,7 +58,6 @@ img {
     }
 }
 
-/* For mobile phones */
 @media (max-width: 768px) {
     .footer {
         padding: 5% 0 5% 0;
@@ -74,7 +72,6 @@ img {
     }
 }
 
-/* For smaller mobile phones */
 @media (max-width: 480px) {
     .footer {
         padding: 10% 0 10% 0;

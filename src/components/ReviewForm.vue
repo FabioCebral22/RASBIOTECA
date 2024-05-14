@@ -53,8 +53,6 @@
             })
           });
           if (response.ok) {
-            console.log('Review created successfully');
-            // Limpiar los campos después de enviar el formulario
             this.reviewData = '';
             this.reviewValue = 0;
           } else {

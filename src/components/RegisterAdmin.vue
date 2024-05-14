@@ -89,7 +89,6 @@ label {
     font-size: 0.9rem;
 }
 
-/* Login Button */
 
 button {
     width: 100%;
@@ -110,7 +109,6 @@ button {
     color: #ffffff;
 }
 
-/* Links */
 
 .links {
     display: flex;
@@ -142,7 +140,6 @@ a:hover {
     width: 15rem;
 }
 
-/* Centro del logo */
 .logo-container {
     display: flex;
     justify-content: center;

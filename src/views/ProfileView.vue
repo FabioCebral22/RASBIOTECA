@@ -46,11 +46,9 @@ export default {
     const token = localStorage.getItem('token');
 
     if (this.checkIsCompany(token)) {
-      console.log('El token contiene la propiedad isCompany en true.');
       this.company = true;
       this.user = false;
     } else {
-      console.log('El token no contiene la propiedad isCompany en true.');
       this.company = false;
       this.user = true;
     }
@@ -59,7 +57,6 @@ export default {
 </script>
 
 <style scoped>
-/* Estilos para PC y tablet */
 .body {
   color: #E3E3E3;
   display: flex;

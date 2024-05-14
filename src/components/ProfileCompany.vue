@@ -70,7 +70,6 @@ export default {
           if (response.ok) {
             const data = await response.json();
             this.clubs = data.body;
-            console.log(this.clubs)
           } else {
             console.error('Error al obtener los clubes propiedad de la compañía');
           }
@@ -78,7 +77,6 @@ export default {
           console.error('Error:', error);
         }
       } else {
-        console.log("No hay token");
         router.push("/");
       }
     },
@@ -95,7 +93,6 @@ export default {
           if (response.ok) {
             const data = await response.json();
             this.company = data.body;
-            console.log('+++++++++++++++' + this.company.company_nif)
           } else {
             console.error('Error al obtener los datos de la compañía');
           }
@@ -103,7 +100,6 @@ export default {
           console.error('Error:', error);
         }
       } else {
-        console.log("No hay token");
         router.push("/");
       }
     },
@@ -132,7 +128,6 @@ export default {
           console.error(err);
           return;
         }
-        console.log("Initialization finished. Ready to start");
         Quagga.start();
       });
 
@@ -166,7 +161,6 @@ export default {
     return response.json();
   })
   .then(data => {
-    console.log(data); 
     this.result = 'El código existe en la base de datos.';
   })
   .catch(error => {
@@ -182,7 +176,6 @@ export default {
   created() {
     const token = localStorage.getItem('token');
     if (this.checkIsCompany(token)) {
-      console.log('El token contiene la propiedad isCompany en true.');
       this.fetchCompanyData();
       this.fetchOwnedClubs();
     }
@@ -225,15 +218,12 @@ export default {
 
 .btn-create:hover {
   background-color: #45a049;
-  /* Cambio de color al pasar por encima */
 }
 
 .btn-create:active {
   background-color: #3e8e41;
-  /* Cambio de color al hacer clic */
 }
 
-/* Estilos para PC y tablet */
 .body {
   color: #E3E3E3;
   display: flex;
@@ -314,7 +304,6 @@ export default {
   justify-content: center;
 }
 
-/* Estilos para móvil */
 @media screen and (max-width: 479px) {
   .profile-image {
     width: 6rem;

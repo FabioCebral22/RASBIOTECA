@@ -53,7 +53,6 @@ export default {
                     },
                     body: JSON.stringify({ club_id: clubId })
                 });
-                console.log("HOLA" + clubId)
                 if (!response.ok) {
                     const errorMessage = await response.text();
                     throw new Error(errorMessage || 'Error al eliminar el club');
@@ -88,7 +87,6 @@ export default {
             try {
             const tokenParts = token.split('.');
             const payload = JSON.parse(atob(tokenParts[1]));
-            console.log('-------'+ payload.companyData.company_email)
             const response = await fetch('http://localhost:3001/api/check-club', {
                 method: 'POST',
                 headers: {
@@ -101,10 +99,8 @@ export default {
             });
             const data = await response.json();
             if (data.exists) {
-                console.log('El club existe para esta empresa.');
                 this.isOwner=true
             } else {
-                console.log('El club no existe para esta empresa.');
             }
         } catch (error) {
             console.error('Error al verificar el club:', error);
@@ -115,7 +111,6 @@ export default {
         const token = localStorage.getItem('token');
 
         if(this.checkIsCompany(token)) {
-    console.log('El token contiene la propiedad isCompany en true.');
 
             this.isCompany=true
             this.checkIsOwner(token)

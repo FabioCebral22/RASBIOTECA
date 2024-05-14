@@ -52,7 +52,6 @@ export default {
 
         if (response.ok) {
           const data = await response.json();
-          console.log('Login successful');
           localStorage.setItem('token', data.body.token);
           this.$router.push('/home');
         } else {
@@ -111,7 +110,6 @@ main {
   border-radius: 20px;
 }
 
-/* Left Side */
 
 .left-side {
   height: 100%;
@@ -124,13 +122,11 @@ main {
   border-radius: 20px 0 0 20px;
 }
 
-/* Right Side */
 
 .right-side {
   padding: 60px;
 }
 
-/* Button Group */
 .btn-group {
   display: flex;
   flex-direction: row;
@@ -179,7 +175,6 @@ main {
   padding: 2px;
 }
 
-/* OR */
 
 .or {
   position: relative;
@@ -207,7 +202,6 @@ main {
   right: 0;
 }
 
-/* Inputs and Labels */
 
 input {
   width: 100%;
@@ -241,7 +235,6 @@ label {
   font-size: 0.9rem;
 }
 
-/* Login Button */
 
 .login-btn {
   width: 100%;
@@ -262,7 +255,6 @@ label {
   color: #ffffff;
 }
 
-/* Links */
 
 .links {
   display: flex;

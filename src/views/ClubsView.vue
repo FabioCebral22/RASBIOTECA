@@ -33,7 +33,6 @@ export default {
                 if (response.ok) {
                     const data = await response.json();
                     this.clubs = data.body;
-                    console.log(this.clubs)
                 } else {
                     console.error('Error al obtener los clubes propiedad de la compañía');
                 }
@@ -61,7 +60,6 @@ export default {
                     console.error('Error:', error);
                 }
             } else {
-                console.log("No hay token");
                 this.$router.push("/")            }
         }
     },

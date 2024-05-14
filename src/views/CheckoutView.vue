@@ -70,14 +70,13 @@ export default {
         const tokenParts = token.split('.');
 
 const payload = JSON.parse(atob(tokenParts[1]));
-console.log(payload.clientData.client_email)
         const response = await fetch('http://localhost:3001/api/add-sell', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            client_email: payload.clientData.client_email, // Obtiene el email del cliente desde el localStorage
+            client_email: payload.clientData.client_email, 
             sell_total_price: this.totalPrice,
             ticket_id: this.ticketId,
             qr_guests: this.$route.params.ticketQuantity,
@@ -89,7 +88,6 @@ console.log(payload.clientData.client_email)
           }), 
         });
         const data = await response.json();
-        console.log(data); 
         this.$router.push('/profile');
       } catch (error) {
         console.error('Error al realizar el checkout:', error);

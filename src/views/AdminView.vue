@@ -1,16 +1,12 @@
 <template>
     <div>
         <div class="titles">
-            <!-- Clientes -->
             <h2 @click="toggleTable('clients')" :class="{ 'active': showTables.clients }">Clientes</h2>
 
-            <!-- Compañías -->
             <h2 @click="toggleTable('companies')" :class="{ 'active': showTables.companies }">Compañías</h2>
 
-            <!-- Clubs -->
             <h2 @click="toggleTable('clubs')" :class="{ 'active': showTables.clubs }">Clubs</h2>
 
-            <!-- Eventos -->
             <h2 @click="toggleTable('events')" :class="{ 'active': showTables.events }">Eventos</h2>
         </div>
 
@@ -249,7 +245,6 @@ export default {
         },
         async toggleEventState(event) {
             try {
-                console.log(event.event_id)
                 const response = await fetch('http://localhost:3001/api/event/toggle-state', {
                     method: 'PUT',
                     headers: {
@@ -269,7 +264,6 @@ export default {
             }
         },
         async showEvents(clubId) {
-            console.log("CLUBID", clubId); 
             try {
                 const response = await fetch(`http://localhost:3001/api/clubs/events`, {
                     method: 'POST',
@@ -280,7 +274,6 @@ export default {
                 });
                 const data = await response.json();
                 this.events = data; 
-                console.log(this.events)
             } catch (error) {
                 console.error('Error fetching events:', error);
             }
@@ -311,22 +304,18 @@ export default {
 }
 .titles {
     text-align: center;
-    /* Centra el texto */
 
 }
 
-/* Estilos CSS para titulos */
 h2 {
     color: white;
     display: inline-block;
     margin-right: 20px;
     cursor: pointer;
     text-align: center;
-    /* Centra el texto */
 
 }
 
-/* Estilos CSS para tablas */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -363,6 +352,5 @@ button:hover {
 
 .active {
     color: #ff008c;
-    /* Cambia el color del título cuando la tabla está desplegada */
 }
 </style>

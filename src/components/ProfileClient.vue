@@ -48,7 +48,7 @@
                 <span v-for="star in 5" :key="star" class="star" :class="{ filled: star <= review.review_value }">
                   &#9733;
                 </span>
-              </div>
+              </div>// Llama a fetchReviews después de obtener los datos del usuario
             </div>
           </div>
         </div>
@@ -99,7 +99,6 @@ export default {
           console.error('Error:', error);
         }
       } else {
-        console.log("No hay token");
         router.push("/");
       }
     },
@@ -141,7 +140,7 @@ export default {
             const data = await response.json();
             this.user = data.body;
             await this.fetchSells();
-            await this.fetchReviews(); // Llama a fetchReviews después de obtener los datos del usuario
+            await this.fetchReviews(); 
           } else {
             console.error('Error fetching user data');
           }
@@ -149,7 +148,6 @@ export default {
           console.error('Error:', error);
         }
       } else {
-        console.log("No hay token");
         router.push("/");
       }
     },
@@ -163,11 +161,11 @@ export default {
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${token}`
             },
-            body: JSON.stringify({ client_email: this.user.client_email }) // Envía el email del usuario al servidor
+            body: JSON.stringify({ client_email: this.user.client_email }) 
           });
           if (response.ok) {
             const data = await response.json();
-            this.reviews = data.reviews; // Actualiza el estado de las reviews
+            this.reviews = data.reviews; 
           } else {
             console.error('Error fetching user reviews');
           }
@@ -175,7 +173,6 @@ export default {
           console.error('Error:', error);
         }
       } else {
-        console.log("No hay token");
         router.push("/");
       }
     },
@@ -225,7 +222,6 @@ export default {
   
 
 <style scoped>
-/* Estilos para PC y tablet */
 .body {
     color: #E3E3E3;
     display: flex;
@@ -314,7 +310,6 @@ export default {
     justify-content: center;
 }
 
-/* Estilos para móvil */
 @media screen and (max-width: 479px) {
     .profile-image {
         width: 6rem;
@@ -340,8 +335,8 @@ export default {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin-bottom: 16px;
     padding: 16px;
-    background-color: #131010; /* Fondo gris */
-    color: #fff; /* Fuente blanca */
+    background-color: #131010; 
+    color: #fff; 
   }
   
   .card-content {

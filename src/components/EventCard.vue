@@ -48,7 +48,6 @@
       this.loadTickets();
       const token = localStorage.getItem('token');
       if (this.checkIsCompany(token)) {
-        console.log('El token contiene la propiedad isCompany en true.');
         this.isCompany = true;
       }
     },
@@ -97,7 +96,6 @@
           if (token) {
             const tokenParts = token.split('.');
             const payload = JSON.parse(atob(tokenParts[1]));
-            console.log('-------' + payload.companyData.company_email);
             return payload.companyData && payload.companyData.isCompany === true;
           } else {
             return false;
@@ -119,7 +117,6 @@
 
 
 <style scoped>
-/* Estilos para el contenedor principal */
 .event-card {
     display: flex;
     flex-direction: column;
@@ -130,7 +127,6 @@
     margin: 20px;
 }
 
-/* Estilos para la imagen del evento */
 .event-image {
     flex: 0 0 auto;
     overflow: hidden;
@@ -144,25 +140,21 @@
     object-fit: cover;
 }
 
-/* Estilos para los detalles del evento */
 .event-details {
     flex: 1;
     padding: 1rem;
 }
 
-/* Estilos para el nombre del evento */
 .event-name {
     font-size: 2rem;
     margin-bottom: 0.5rem;
 }
 
-/* Estilos para la descripción del evento */
 .event-description {
     font-size: 1rem;
     margin-bottom: 1rem;
 }
 
-/* Estilos para la fecha y hora del evento */
 .event-date-time h3 {
     font-size: 1.2rem;
     margin-bottom: 0.5rem;
@@ -172,7 +164,6 @@
     font-size: 1rem;
 }
 
-/* Estilos para el campo de entrada de cantidad de tickets y el botón de compra */
 .ticket-actions {
     display: flex;
     align-items: center;
@@ -192,7 +183,6 @@
     cursor: pointer;
 }
 
-/* Estilos para tablet */
 @media screen and (max-width: 1023px) {
     .event-card {
         margin: 10px;
@@ -207,7 +197,6 @@
     }
 }
 
-/* Estilos para móvil */
 @media screen and (max-width: 479px) {
     .event-name {
         font-size: 1.5rem;
@@ -233,7 +222,6 @@
 
 .ticket-label {
     color: #f5ecec;
-    /* Color principal */
     font-weight: bold;
     font-size: 16px;
     margin-right: 1rem;
@@ -242,20 +230,14 @@
 .ticket-select {
     padding: 8px;
     border: 2px solid #FF008C;
-    /* Color principal */
     border-radius: 5px;
     font-size: 16px;
     color: #FFFFFF;
-    /* Fuente blanca */
     background-color: #000000;
-    /* Negro */
 }
 
-/* Estilos para los options del select */
 .ticket-select option {
     background-color: #000000;
-    /* Negro */
     color: #FFFFFF;
-    /* Fuente blanca */
 }
 </style>

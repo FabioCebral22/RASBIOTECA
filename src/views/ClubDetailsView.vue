@@ -153,9 +153,9 @@ export default {
 .club-details-container {
     width: 100%;
     max-width: 100%; 
-    margin: 0 auto; /* Centrar contenido */
+    margin: 0 auto; 
     padding: 0 1rem;
-    box-sizing: border-box; /* Incluye el padding en el ancho total */
+    box-sizing: border-box; 
 }
 
 .club-header {

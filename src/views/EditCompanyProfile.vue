@@ -63,8 +63,6 @@ export default {
                     body: formData,
                 });
                 const responseData = await response.json();
-                console.log(responseData);
-                // Handle response as needed
             } catch (error) {
                 console.error(error);
             }
