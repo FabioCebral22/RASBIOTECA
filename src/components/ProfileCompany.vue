@@ -1,8 +1,5 @@
 <template>
   <div>
-    <button @click="openCamera">Abrir cámara</button>
-    <video ref="video" autoplay></video>
-    <canvas ref="canvas" style="display: none;"></canvas>
     <div v-if="qrResult !== null">
       <p>QR Detectado: {{ qrResult }}</p>
       <button @click="checkQRCode">Comprobar código</button>
@@ -33,7 +30,10 @@
     </div>
     <router-link to="/CreateClub" class="btn-create">
       <>AÑADIR NUEVO CLUB
-    </router-link>
+    </router-link>    <button @click="openCamera">Abrir cámara</button>
+    <video ref="video" autoplay></video>
+    <canvas ref="canvas" style="display: none;"></canvas>
+  
   </div>
 </template>
 

@@ -63,7 +63,7 @@ export default {
                 });
                 const responseData = await response.json();
                 console.log(responseData);
-                this.$route.push("/profile")
+                this.$router.push("/profile")
             } catch (error) {
                 console.error(error);
             }

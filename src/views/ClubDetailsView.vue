@@ -32,7 +32,7 @@
     <div class="club-reviews">
       <h2 class="rose">Reviews del Club</h2>
       <div v-if="reviews.length === 0">
-        <p>No se han encontrado reviews para este club.</p>
+        <p class="aviso">No se han encontrado reviews para este club.</p>
       </div>
       <div v-else>
         <div v-for="review in reviews" :key="review.review_id" class="review-entry card">
@@ -157,7 +157,10 @@ export default {
   color: #E3E3E3;
   margin-top: 2rem;
 }
-
+.aviso{
+  text-align: center;
+  color: #E3E3E3
+}
 .club-details-container {
   width: 100%;
   max-width: 100%;
