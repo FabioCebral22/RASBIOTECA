@@ -2,24 +2,27 @@
   <div class="home">
     <div class="content">
       <h1>¡Bienvenido a RASBIOTECA, el futuro de la vida nocturna comienza aquí!</h1>
-      <button>Entradas</button>
+      <router-link to="/events"><button>Entradas</button></router-link>
       <router-link to="/">
         <button v-on:click="handleLogout">LogOut</button>
       </router-link>
     </div>
   </div>
-  <div class="upcoming">
-    <h2>Próximamente</h2>
-  </div>
+      <EventsView></EventsView>
 </template>
 
 <script>
+import EventsView from './EventsView.vue';
 export default {
   name: 'HomeView',
+  components: {
+    EventsView
+  },
   data() {
     return {
       user: null,
-      company: null
+      company: null,
+      events: null,
     };
   },
   methods: {
@@ -96,7 +99,7 @@ export default {
     handleTokenError() {
       localStorage.removeItem('token');
       this.$router.push("/");
-    }
+    },
   },
   created() {
     this.checkToken();
@@ -118,6 +121,11 @@ export default {
   flex-direction: column;
   justify-content: center;
 }
+h2{
+    text-align: center;
+    color: #E3E3E3;
+
+  }
 
 .content {
   text-align: center;

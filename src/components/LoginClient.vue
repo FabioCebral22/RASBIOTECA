@@ -19,7 +19,7 @@
 
           <button type="submit" class="login-btn">Sign in</button>
           <div class="links">
-            <a href="/register">¡Que! ¿Todavía no tienes cuenta en la Rasbioteca?</a>
+          <router-link to="/register">Que! ¿Todavía no tienes cuenta en la Rasbioteca?</router-link>
           </div>
         </form>
       </div>
@@ -137,7 +137,7 @@ main {
   justify-content: space-between;
   align-items: center;
   gap: 5px;
-  margin-bottom: 32px0px;
+  margin-bottom: 32px 0px;
 }
 
 .btn-group .btn {
@@ -277,14 +277,14 @@ a:active {
   text-decoration: none;
 }
 
-a {
+.links * {
   color: #ff008c;
   font-size: 1rem;
   font-weight: 700;
   transition: all 0.4s ease;
 }
 
-a:hover {
+.links:hover * {
   color: white;
 }
 .logotipo {

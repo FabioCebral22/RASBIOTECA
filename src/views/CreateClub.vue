@@ -95,7 +95,7 @@ export default {
                 const data = await response.json();
                 console.log(data);
 
-                this.$router.push('/home');
+                this.$router.push('/profile');
             } catch (error) {
                 console.error(error);
             }

@@ -1,6 +1,6 @@
 <template>
     <div class="editar-cliente">
-        <h1>Editar Perfil de Cliente</h1>
+        <h1>Edita tu Perfil</h1>
         <form @submit.prevent="submitForm">
             <div class="form-group">
                 <label for="clientNickname">Nickname:</label>
@@ -9,7 +9,10 @@
 
             <div class="form-group">
                 <label for="clientPassword">Contraseña:</label>
-                <input id="clientPassword" v-model="client.client_password" type="password" class="input-field" required />
+                <input id="clientPassword" v-model="client.client_password" type="password" class="input-field"
+                    required />
+                <p v-if="errorPassword" class="error">La contraseña debe tener al menos 8 caracteres, 1 mayúscula, 1
+                    minúscula y 1 número</p>
             </div>
 
             <div class="form-group">
@@ -20,6 +23,7 @@
             <div class="form-group">
                 <label for="clientImg">Imagen de Perfil:</label>
                 <input id="clientImg" type="file" ref="fileInput" class="input-field" @change="onFileChange" />
+                <p class="aviso">No adjuntes imagen si deseas continuar con la que ya hay*</p>
             </div>
 
             <button type="submit" class="submit-button" :disabled="!formIsValid">Guardar Cambios</button>
@@ -28,6 +32,7 @@
 </template>
 
 <script>
+import router from '@/router';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -42,6 +47,7 @@ export default {
                 client_name: '',
                 client_img: null,
             },
+            errorPassword: false
         };
     },
     computed: {
@@ -54,26 +60,31 @@ export default {
         },
     },
     methods: {
+        validatePassword(password) {
+            return /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(password);
+        },
         async submitForm() {
             const formData = new FormData();
             formData.append('client_nickname', this.client.client_nickname);
             formData.append('client_password', this.client.client_password);
-            formData.append('client_name', this.client.client_name);
             formData.append('client_id', this.client.client_id);
 
-            // Adjuntar la imagen si se ha seleccionado un nuevo archivo
             if (this.client.client_img) {
                 formData.append('client_img', this.client.client_img);
             }
-
+            if (!this.validatePassword(this.client.client_password)) {
+                this.errorPassword = true;
+                return;
+            }
             try {
-                const response = await fetch(`http://localhost:3001/api/clients/edit`, {
+                const clientId = this.$route.params.client_id;
+                const response = await fetch(`http://localhost:3001/api/clients/edit/${clientId}`, {
                     method: 'PUT',
                     body: formData,
                 });
                 const responseData = await response.json();
                 console.log(responseData);
-                // Manejar la respuesta según sea necesario
+                this.$router.push('/profile')
             } catch (error) {
                 console.error(error);
             }
@@ -97,6 +108,7 @@ export default {
                 });
                 const responseData = await response.json();
                 this.client = responseData.body;
+                
             } catch (error) {
                 console.error(error);
             }
@@ -126,7 +138,9 @@ export default {
     max-width: 500px;
     margin-bottom: 10px;
 }
-
+.error{
+    color: #FF008C
+}
 .input-field {
     width: 100%;
     padding: 10px;
@@ -135,12 +149,22 @@ export default {
     margin: 5px 0;
     font-family: 'Poppins', sans-serif;
 }
-h1, label{
+#clientImg{
+    color:#e3e3e3;
+
+}
+h1,
+label {
     color: #e3e3e3
 }
-label{
+.aviso{
+    color:#e3e3e3;
+    font-size: 0.7rem;
+}
+label {
     font-weight: 600;
 }
+
 .submit-button {
     font-weight: 600;
     width: 50%;

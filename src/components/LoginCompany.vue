@@ -19,7 +19,7 @@
 
           <button type="submit" class="login-btn">Sign in</button>
           <div class="links">
-            <a href="/register">Crea tu cuenta de empresa para Rasbioteca</a>
+            <router-link to="/register">Crea tu cuenta de empresa para Rasbioteca</router-link>
           </div>
         </form>
       </div>
@@ -274,14 +274,14 @@ a:hover,
 a:active {
   text-decoration: none;
 }
-a {
+.links * {
   color: #ff008c;
   font-size: 1rem;
   font-weight: 700;
   transition: all 0.4s ease;
 }
 
-a:hover {
+.links:hover * {
   color: white;
 }
 .logotipo {

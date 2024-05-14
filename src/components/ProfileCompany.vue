@@ -6,8 +6,8 @@
         <img :src='"http://localhost:3001" + company.company_img' alt="Imagen de perfil" class="profile-image">
         <div class="info">
           <h1>{{ company.company_name }}</h1>
-          <h2>({{ company.company_email }})</h2>
-          <p class="email">{{ company.company_info }}</p>
+          <h2 class="email">({{ company.company_email }})</h2>
+          <p>{{ company.company_info }}</p>
           <router-link :to="{ name: 'EditCompany', params: { company_nif: company.company_nif } }"
             class="btn-edit">Editar perfil</router-link>
         </div>
@@ -22,10 +22,9 @@
         <p>No se encontraron clubes para esta compañía.</p>
       </div>
     </div>
-    <a href="/CreateClub" class="btn-create">
+    <router-link to="/CreateClub" class="btn-create">
       <>AÑADIR NUEVO CLUB
-    </a>
-
+    </router-link>
   </div>
 </template>
 
@@ -118,6 +117,27 @@ export default {
 </script>
 
 <style scoped>
+@media only screen and (max-width: 600px) {
+  .email{
+    font-size: 0.1rem;
+  }
+  .header-img {
+    height: 10rem; /* Reducir la altura de la imagen del encabezado en dispositivos móviles */
+  }
+  .profile-image {
+    width: 6rem; /* Reducir el tamaño de la imagen de perfil en dispositivos móviles */
+    height: 6rem;
+  }
+  .info {
+    font-size: 0.8rem; /* Reducir el tamaño de fuente en dispositivos móviles */
+  }
+  .btn-edit {
+    font-size: 0.8rem; /* Reducir el tamaño de fuente del botón en dispositivos móviles */
+  }
+  .btn-create {
+    font-size: 0.8rem; /* Reducir el tamaño de fuente del botón en dispositivos móviles */
+  }
+}
 .btn-edit {
   display: inline-block;
   background-color: #BD0068;
@@ -141,32 +161,22 @@ export default {
 .btn-create {
   display: inline-block;
   background-color: #4CAF50;
-  /* Color de fondo verde */
   color: white;
-  /* Color del texto blanco */
   padding: 10px 20px;
-  /* Espaciado interno */
   text-align: center;
-  /* Alineación del texto */
   text-decoration: none;
-  /* Sin subrayado */
   border-radius: 5px;
-  /* Borde redondeado */
   transition: background-color 0.3s ease;
-  /* Transición suave del color de fondo */
+  margin-bottom: 2rem;
 }
 
 .btn-create:hover {
   background-color: #45a049;
-  /* Cambio de color al pasar por encima */
 }
 
 .btn-create:active {
   background-color: #3e8e41;
-  /* Cambio de color al hacer clic */
 }
-
-/* Estilos para PC y tablet */
 .body {
   color: #E3E3E3;
   display: flex;
@@ -245,26 +255,5 @@ export default {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-}
-
-/* Estilos para móvil */
-@media screen and (max-width: 479px) {
-  .profile-image {
-    width: 6rem;
-    height: 6rem;
-  }
-
-  .email {
-    font-size: 0.7rem;
-  }
-
-  .rose {
-    font-size: 1.2rem;
-  }
-
-  .activities,
-  .reviews {
-    margin-top: 1rem;
-  }
 }
 </style>

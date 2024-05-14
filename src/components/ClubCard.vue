@@ -123,113 +123,150 @@ export default {
     }
 
 };
-</script><style scoped>
+</script>
+<style scoped>
+/* Estilos base */
 .btn-action {
-    color: white;
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    font-size: 1rem; 
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 1rem;
 }
 
 .btn-delete {
-    background-color: #BD0068;
+  background-color: #bd0068;
 }
 
 .btn-delete:hover {
-    background-color: #9C004D;
+  background-color: #9c004d;
 }
 
 .btn-add {
-    background-color: #007BFF;
+  background-color: #007bff;
 }
 
 .btn-add:hover {
-    background-color: #0056b3;
+  background-color: #0056b3;
 }
 
 .btn-edit {
-    background-color: #28a745;
+  background-color: #28a745;
 }
 
 .btn-edit:hover {
-    background-color: #218838;
+  background-color: #218838;
 }
 
 .btn-add {
-    display: inline-block;
-    background-color: #36c6ff; 
-    text-decoration: none; 
-    padding: 0.3rem 1rem; 
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-    font-size: 0.9rem;
+  display: inline-block;
+  text-decoration: none;
+  padding: 0.3rem 1rem;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  font-size: 0.9rem;
 }
 
-.btn-add:hover {
-    background-color: #1b4edb; 
-}
-
-.btn-edit {
-    background-color: #2ecc71; 
-}
-
+.btn-add:hover,
 .btn-edit:hover {
-    background-color: #24a04a;
+  opacity: 0.9; /* Reducir la opacidad en el hover para mejorar la retroalimentación */
 }
 
 .club-link {
-    text-decoration: none; 
+  text-decoration: none;
 }
 
 .club-card {
-    display: flex;
-    background-color: #1a1a1d;
-    color: #FFFFFF;
-    border-radius: 10px;
-    overflow: hidden; 
-    margin: 20px;
+  display: flex;
+  background-color: #1a1a1d;
+  color: #ffffff;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 20px;
 }
 
 .club-image {
-    flex: 0 0 15rem;
-    overflow: hidden;
-    border-radius: 10px 0 0 10px;
-    height: 23rem;
-    width: 17rem;
+  flex: 0 0 15rem;
+  overflow: hidden;
+  border-radius: 10px 0 0 10px;
+  height: 23rem;
+  width: 17rem;
 }
 
 .club-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .club-details {
-    flex: 1;
-    padding: 1rem;
+  flex: 1;
+  padding: 1rem;
 }
 
 .club-name {
-    font-size: 2rem;
-    margin-bottom: 0.5rem;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
 }
 
 .club-description {
-    font-size: 1rem;
-    margin-bottom: 1rem;
+  font-size: 1rem;
+  margin-bottom: 1rem;
 }
 
 .club-schedule h3,
 .club-rules h3 {
-    font-size: 1.2rem;
-    margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
 }
 
 .club-schedule p,
 .club-rules p {
-    font-size: 1rem;
+  font-size: 1rem;
+}
+
+/* Reglas de medios para dispositivos con pantalla de hasta 768px (tabletas y móviles) */
+@media screen and (max-width: 768px) {
+  .club-card {
+    flex-direction: column; /* Cambiar la dirección del flex para apilamiento en dispositivos móviles */
+  }
+
+  .club-image {
+    flex: 1 0 auto; /* Permitir que la imagen se ajuste automáticamente en altura */
+    border-radius: 10px 10px 0 0; /* Ajustar los radios de borde */
+    height: 16rem; /* Reducir la altura de la imagen en dispositivos móviles */
+    width: 100%; /* Ajustar el ancho al 100% */
+    margin-bottom: 1rem; /* Agregar espacio entre la imagen y los detalles */
+  }
+
+  .club-details {
+    flex: 1; /* Permitir que los detalles se expandan para ocupar el espacio restante */
+  }
+
+  .club-image img {
+    height: 100%; /* Ajustar la altura de la imagen al 100% */
+  }
+
+  .club-name {
+    font-size: 1.8rem; /* Reducir el tamaño del nombre del club en dispositivos móviles */
+  }
+
+  .club-description {
+    font-size: 0.9rem; /* Reducir el tamaño del texto de descripción en dispositivos móviles */
+  }
+
+  .club-schedule h3,
+  .club-rules h3,
+  .club-schedule p,
+  .club-rules p {
+    font-size: 1rem; /* Reducir el tamaño del texto de horario y reglas en dispositivos móviles */
+  }
+
+  .btn-action {
+    font-size: 0.9rem; /* Reducir el tamaño de los botones en dispositivos móviles */
+    margin-bottom: 0.5rem; /* Agregar espacio entre los botones */
+  }
 }
 </style>

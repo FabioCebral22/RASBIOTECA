@@ -30,8 +30,7 @@
 
           <button type="submit" class="login-btn">Registrarse</button>
           <div class="links">
-            <a href="#">Forgot password?</a>
-            <a href="#">Do not have an account?</a>
+            <router-link to="/">¿Ya tienes cuenta? Inicia sesión</router-link>
           </div>
         </form>
       </div>
@@ -297,15 +296,14 @@ a:active {
   text-decoration: none;
 }
 
-a {
+.links * {
   color: #ff008c;
-  font-size: 0.88rem;
-  font-weight: 600;
-  letter-spacing: -1px;
+  font-size: 1rem;
+  font-weight: 700;
   transition: all 0.4s ease;
 }
 
-a:hover {
+.links:hover * {
   color: white;
 }
 .logotipo {

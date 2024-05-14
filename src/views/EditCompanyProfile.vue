@@ -51,7 +51,6 @@ export default {
             formData.append('company_name', this.company.company_name);
             formData.append('company_info', this.company.company_info);
 
-            // Solo adjuntar la imagen si se ha seleccionado un nuevo archivo
             if (this.company.company_img) {
                 formData.append('company_img', this.company.company_img);
             }
@@ -64,7 +63,7 @@ export default {
                 });
                 const responseData = await response.json();
                 console.log(responseData);
-                // Handle response as needed
+                this.$route.push("/profile")
             } catch (error) {
                 console.error(error);
             }
@@ -122,7 +121,12 @@ h1{
     max-width: 500px;
     margin-bottom: 10px;
 }
-
+h1, label, #companyLogo{
+    color: #e3e3e3
+}
+label{
+    font-weight: 600;
+}
 .input-field {
     width: 100%;
     padding: 10px;
@@ -133,6 +137,7 @@ h1{
 }
 
 .submit-button {
+    font-weight: 600;
     width: 50%;
     padding: 10px;
     margin: 20px auto;

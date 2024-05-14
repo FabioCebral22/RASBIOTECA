@@ -11,7 +11,7 @@ import CreateEvent from '@/views/CreateEvent.vue'
 import ClubsView from '@/views/ClubsView.vue'
 import ClubDetailsView from '@/views/ClubDetailsView.vue'
 import EventsView from '@/views/EventsView.vue'
-import EventDetailsView from '@/views/EventDetailsView.vue'
+import EditEvent from '@/views/EditEvent.vue'
 import CheckoutView from '@/views/CheckoutView.vue'
 import EditClub from '@/views/EditClub.vue'
 import EditCompanyProfile from '@/views/EditCompanyProfile.vue'
@@ -29,11 +29,6 @@ const router = createRouter({
       path: '/home',
       name: 'home',
       component: HomeView
-    },
-    {
-      path: '/editarPerfil',
-      name: 'editarPerfil',
-      component: () => import('../views/EditarPerfil.vue')
     },
     {
       path: '/register',
@@ -87,11 +82,11 @@ const router = createRouter({
       name: 'EventsView',
       component: EventsView
     },
-    {
-      path: '/events/:eventId',
-      name: 'EventDetails',
-      component: EventDetailsView
-    },
+    // {
+    //   path: '/events/:eventId',
+    //   name: 'EventDetails',
+    //   component: EventDetailsView
+    // },
     {
       path: '/checkout/:ticketName/:ticketQuantity/:ticketPrice',
       name: 'checkout',
@@ -114,9 +109,12 @@ const router = createRouter({
     name: 'EditClient',
     component: EditClientProfile
   },
-
-    
-
+  {
+    path: '/events/edit/:eventId',
+    name: 'EditEvent',
+    component: EditEvent,
+    props: true
+},
   ]
 })
 

@@ -23,8 +23,9 @@
         </div>
   
         <div class="form-group">
-          <label for="clubLogo">Logo del Club:</label>
+          <label for="clubLogo">Imagen del Club:</label>
           <input id="clubLogo" type="file" ref="fileInput" class="input-field" @change="onFileChange" />
+          <p class="aviso">No adjuntes imagen si deseas continuar con la que ya hay*</p>
         </div>
   
         <button type="submit" class="submit-button" :disabled="!formIsValid">Guardar Cambios</button>
@@ -80,7 +81,7 @@
     });
     const responseData = await response.json();
     console.log(responseData);
-    // Handle response as needed
+    this.$router.push('/profile');
   } catch (error) {
     console.error(error);
   }
@@ -142,8 +143,18 @@
     margin: 5px 0;
     font-family: 'Poppins', sans-serif;
   }
-  
+  h1, label, #clubLogo{
+    color: #e3e3e3
+  }
+  label{
+    font-weight: 600;
+  }
+  .aviso{
+    color:#e3e3e3;
+    font-size: 0.7rem;
+}
   .submit-button {
+    font-weight: 600;
     width: 50%;
     padding: 10px;
     margin: 20px auto;

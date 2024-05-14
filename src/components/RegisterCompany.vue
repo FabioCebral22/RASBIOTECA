@@ -32,8 +32,7 @@
 
           <button type="submit" class="login-btn">Registrarse</button>
           <div class="links">
-            <a href="#">Forgot password?</a>
-            <a href="#">Do not have an account?</a>
+            <router-link to="/">Inicia sesión si ya eres partícipe de la Rasbioteca</router-link>
           </div>
         </form>
       </div>
@@ -111,6 +110,7 @@ export default {
     background: #222431;
     padding: 0;
     margin: 0;
+    margin-bottom: 4rem;
   }
   
   /* Snow */
@@ -302,17 +302,16 @@ export default {
     text-decoration: none;
   }
   
-  a {
-    color: #ff008c;
-    font-size: 0.88rem;
-    font-weight: 600;
-    letter-spacing: -1px;
-    transition: all 0.4s ease;
-  }
-  
-  a:hover {
-    color: white;
-  }
+  .links * {
+  color: #ff008c;
+  font-size: 1rem;
+  font-weight: 700;
+  transition: all 0.4s ease;
+}
+
+.links:hover * {
+  color: white;
+}
   .logotipo {
       height: 3rem;
       width: 15rem;
